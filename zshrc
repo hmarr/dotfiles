@@ -18,6 +18,9 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 
+# Emacs-style key bindings
+bindkey -e
+
 # Allow comments in interactive shells
 setopt interactive_comments
 
