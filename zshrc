@@ -2,8 +2,14 @@
 alias l="ls -AF"
 alias ll="ls -lh"
 alias la="ls -A"
+
 alias ...="cd ../.."
 alias ....="cd ../../.."
+
+alias g="git"
+alias gst="git status"
+alias vi="vim"
+alias bx="bundle exec"
 
 # Save history
 HISTSIZE=10000
