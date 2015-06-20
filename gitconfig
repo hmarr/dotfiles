@@ -1,0 +1,13 @@
+[user]
+  name = Harry Marr
+  email = harry.marr@gmail.com
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+[core]
+  excludesfile = /Users/harry/.gitignore_global
+[url "https://github.com/"]
+  insteadOf = "github:"
+[url "git@github.com:"]
+  insteadOf = "gh:"
