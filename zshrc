@@ -92,7 +92,6 @@ if [ -f ~/.zgen/zgen.zsh ]; then
     echo "creating a zgen save"
 
     zgen oh-my-zsh plugins/chruby
-    zgen load zsh-users/zsh-syntax-highlighting
     zgen load supercrabtree/k
 
     zgen save
