@@ -10,23 +10,33 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
+
+" Core
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'kien/ctrlp.vim'
+Plugin 'JazzCore/ctrlp-cmatcher'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-markdown'
-Plugin 'tpope/vim-rails'
+Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-endwise'
 Plugin 'bling/vim-airline'
 Plugin 'matchit.zip'
-Plugin 'kana/vim-textobj-user'
-Plugin 'nelstrom/vim-textobj-rubyblock'
-Plugin 'othree/html5.vim'
-Plugin 'leshill/vim-json'
 Plugin 'michaeljsmith/vim-indent-object'
-Plugin 'mileszs/ack.vim'
-Plugin 'rust-lang/rust.vim'
-Plugin 'jnwhiteh/vim-golang'
+Plugin 'kana/vim-textobj-user'
+
+" Tools
+Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-fugitive'
+
+" Languages
+Plugin 'nelstrom/vim-textobj-rubyblock'
+Plugin 'tpope/vim-rails'
+Plugin 'elzr/vim-json'
+Plugin 'othree/html5.vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'fatih/vim-go'
+Plugin 'tpope/vim-markdown'
+Plugin 'exu/pgsql.vim'
 Plugin 'thoughtbot/vim-rspec'
 
 call vundle#end()            " required
@@ -37,7 +47,7 @@ filetype plugin indent on    " required
 " Basic Settings ================================================== {{{
 
 " Enable syntax highlighting
-syntax enable
+syntax on
 " Use indent level from previous line
 set autoindent
 " Replace tabs with spaces
@@ -88,16 +98,26 @@ set wildignore+=*.o,*.obj,.git,*.pyc,node_modules
 " Enable filetype settings (inc. indentation), files in .vim/ftplugin are read
 filetype off
 filetype plugin indent on
+" Set terminal title to current buffer
+set title
+let &titleold=getcwd()
+" Don't autocomplete full names, only longest prefix
+set completeopt+=longest
 
 " Highlight 80th column so code can still be pretty in full-screen terminals
 if exists("&colorcolumn")
-    set colorcolumn=81
+    set colorcolumn=80
 endif
 
 " Solarized is awesome
 colorscheme solarized
 " Light solarized colour scheme
 set background=light
+
+" Disable slow regex engine for faster syntax highlighting
+if v:version >= 704
+  set regexpengine=1
+endif
 
 " }}}
 
@@ -140,8 +160,8 @@ vnoremap <leader>x "+x
 nnoremap <leader>p "+gp
 nnoremap <leader>P "+gP
 
-" Ack shortcut. <left><right> there to keep space being stripped :|
-nnoremap <leader>a :Ack! <left><right>
+" Ag shortcut. <SPACE> there to keep space being stripped :|
+nnoremap <leader>a :Ag!<SPACE>
 
 " Substitute
 nnoremap <leader>s :%s//g<left><left>
@@ -165,8 +185,8 @@ vnoremap <space> za
 nnoremap vv ^vg_
 
 " Switch tabs easily
-nnoremap <A-S-left> gT
-nnoremap <A-S-right> gt
+nnoremap ˙ gT
+nnoremap ¬ gt
 
 " Shortcuts for enabling / disabling search highlighting
 nnoremap ,hl :set hls<CR>
@@ -185,6 +205,18 @@ cmap w!! w !sudo tee % >/dev/null
 
 " Plugin Options ================================================== {{{
 
+" Actually good ctrl-p matcher, more like cmd-t
+let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+
+if executable('ag')
+  " If ag is available, use it for ctrl p, as it's super quick
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_use_caching = 0
+endif
+
+" ag.vim mapping message is too long
+let g:ag_mapping_message = 0
+
 " Posh airline glyphs
 let g:airline_powerline_fonts = 1
 
@@ -199,6 +231,7 @@ if has("autocmd")
     autocmd FileType python setlocal softtabstop=4 shiftwidth=4 tabstop=4
     " Tell ruby files to use two spaces for indentation
     autocmd FileType ruby setlocal softtabstop=2 shiftwidth=2 tabstop=4
+    "autocmd FileType ruby let b:delimitMate_expand_cr = 0
     " Tell json files to use two spaces for indentation
     autocmd FileType json setlocal softtabstop=2 shiftwidth=2 tabstop=4
     " Tell javascript files to use two spaces for indentation
@@ -213,9 +246,12 @@ if has("autocmd")
     autocmd FileType go setlocal makeprg=go\ run\ %
     " Makefiles use tabs only
     autocmd FileType make setlocal noexpandtab
+    " gitconfig uses tabs when `git config --global ...` is used
+    autocmd FileType gitconfig setlocal noexpandtab
 
-    " Use {{{ - }}} style folds in vimscript
+    " Use {{{ - }}} style folds in vimscript and zshrc
     autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType zsh setlocal foldmethod=marker
 endif
 
 " }}}
