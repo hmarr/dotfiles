@@ -1,4 +1,4 @@
-# Aliases ========================================================= {{{
+# Aliases {{{
 
 alias l="ls -AF"
 alias ll="ls -lh"
@@ -14,7 +14,7 @@ alias bx="bundle exec"
 
 # }}}
 
-# History ========================================================= {{{
+# History {{{
 
 # Save history
 HISTSIZE=10000
@@ -31,7 +31,7 @@ setopt HIST_REDUCE_BLANKS
 
 # }}}
 
-# Key bindings ==================================================== {{{
+# Key bindings {{{
 
 # Emacs-style key bindings
 bindkey -e
@@ -54,7 +54,7 @@ bindkey ' ' magic-space
 
 # }}}
 
-# General config ================================================== {{{
+# General config {{{
 
 # Allow comments in interactive shells
 setopt interactive_comments
@@ -82,20 +82,28 @@ WORDCHARS=${WORDCHARS//[\/.-]}
 
 # }}}
 
-# Antigen        ================================================== {{{
+# Plugins {{{
 
-if [ -f ~/.antigen.zsh ]; then
-  source ~/.antigen.zsh
-  antigen bundle zsh-users/zsh-syntax-highlighting
-  antigen bundle chruby
-  antigen apply
+if [ -f ~/.zgen/zgen.zsh ]; then
+  ZGEN_DIR=~/.zgen/plugins
+  source ~/.zgen/zgen.zsh
+
+  if ! zgen saved; then
+    echo "creating a zgen save"
+
+    zgen oh-my-zsh plugins/chruby
+    zgen load zsh-users/zsh-syntax-highlighting
+    zgen load supercrabtree/k
+
+    zgen save
+  fi
 else
-  echo "warning: antigen is not installed, plugins won't be enabled"
+  echo "warning: zgen is not installed, plugins won't be enabled"
 fi
 
 # }}}
 
-# Prompt ========================================================== {{{
+# Prompt {{{
 
 setopt PROMPT_SUBST
 
@@ -104,7 +112,7 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:*' unstagedstr '*'
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' formats ' %F{blue}%c%u %F{yellow}%b'
+zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{yellow}%b%{$reset_color%}"
 precmd() {
   vcs_info
 }
@@ -119,7 +127,7 @@ function {
 
 # }}}
 
-# Custom functions ================================================ {{{
+# Custom functions {{{
 
 jp() { cd ~/projects/$1 }
 compctl -W ~/projects -/ jp
