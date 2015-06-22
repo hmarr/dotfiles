@@ -111,7 +111,7 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:*' unstagedstr '*'
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{yellow}%b%{$reset_color%}"
+zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f"
 precmd() {
   vcs_info
 }
