@@ -9,8 +9,22 @@ alias ....="cd ../../.."
 
 alias g="git"
 alias gst="git status"
-alias vi="vim"
+alias vim="nvim"
+alias vi="nvim"
+alias vip="nvim \$(fzf)"
 alias bx="bundle exec"
+
+alias -g router_ip="\$(route -n get default -ifscope en0 | awk '/gateway/ { print \$2 }')"
+
+alias sknife="KNIFE_ENV=staging knife"
+alias pknife="KNIFE_ENV=production knife"
+alias sssh="sknife ssh --ssh-user hmarr --ssh-port 61315 -a softlayer.private_ip"
+alias pssh="pknife ssh --ssh-user hmarr --ssh-port 61315 -a softlayer.private_ip"
+
+alias docker-killall="docker ps | tail -n +2 | cut -f1 -d' ' | xargs docker kill"
+alias docker-cleanup="docker ps -a | cut -f1 -d' ' | tail -n +2 | xargs docker rm"
+
+alias fix-audio="sudo launchctl unload /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist && sudo launchctl load /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist"
 
 # }}}
 
@@ -54,6 +68,17 @@ bindkey ' ' magic-space
 
 # }}}
 
+# Completion {{{
+
+# Complete ssh with hosts in ~/.ssh/config
+zstyle -s ':completion:*:hosts' hosts _ssh_config
+if [[ -r ~/.ssh/config ]]; then
+  _ssh_config+=($(cat ~/.ssh/config | grep -v '\*' | sed -ne 's/Host[=\t ]//p'))
+fi
+zstyle ':completion:*:hosts' hosts $_ssh_config
+
+# }}}
+
 # General config {{{
 
 # Allow comments in interactive shells
@@ -79,26 +104,6 @@ colors
 
 # Add more word separators
 WORDCHARS=${WORDCHARS//[\/.-]}
-
-# }}}
-
-# Plugins {{{
-
-if [ -f ~/.zgen/zgen.zsh ]; then
-  ZGEN_DIR=~/.zgen/plugins
-  source ~/.zgen/zgen.zsh
-
-  if ! zgen saved; then
-    echo "creating a zgen save"
-
-    zgen oh-my-zsh plugins/chruby
-    zgen load supercrabtree/k
-
-    zgen save
-  fi
-else
-  echo "warning: zgen is not installed, plugins won't be enabled"
-fi
 
 # }}}
 
@@ -130,6 +135,47 @@ function {
 
 jp() { cd ~/projects/$1 }
 compctl -W ~/projects -/ jp
+
+jgo() { cd ~/projects/go/src/github.com/$1 }
+compctl -W ~/projects/go/src/github.com -/ jgo
+
+vpn() {
+  local vpn="${1:-💼 GoCardless}"
+  local vpn_status=$(scutil --nc status $vpn | head -n1)
+
+  if [[ "$vpn_status" == "Disconnected" ]]; then
+    echo Connecting to VPN...
+/usr/bin/env osascript <<-EOF
+tell application "System Events"
+  tell current location of network preferences
+    set VPN to service "$vpn"
+    if exists VPN then connect VPN
+    repeat while (current configuration of VPN is not connected)
+      delay 1
+    end repeat
+  end tell
+end tell
+EOF
+    vpn_status=$(scutil --nc status $vpn | head -n1)
+  fi
+
+  echo "$vpn_status"
+}
+
+batt() {
+  time_remaining=$(pmset -g batt | egrep "([0-9]+:[0-9]+)" -o)
+  pct_remaining=$(pmset -g batt | egrep "([0-9]+\%)" -o)
+  echo "$time_remaining remaining ($pct_remaining)"
+}
+
+# }}}
+
+# Custom initialisation {{{
+
+#ch-go 1.4.2
+#ch-python 2.7.10
+#ch-node 4.1.0
+#chruby ruby-2.3.0
 
 # }}}
 

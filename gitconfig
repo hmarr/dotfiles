@@ -5,6 +5,7 @@
 	co = checkout
 	ci = commit
 	st = status
+	tidy-branches = !git branch --merged master | grep -v -e '^* ' -e '^. master$' -e '^. dev$' | xargs git branch -d
 [core]
 	excludesfile = /Users/harry/.gitignore_global
 [url "https://github.com/"]
@@ -13,3 +14,5 @@
 	insteadOf = "gh:"
 [push]
 	default = simple
+[branch]
+	autosetuprebase = always
