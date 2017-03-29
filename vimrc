@@ -13,13 +13,14 @@ Plugin 'gmarik/Vundle.vim'
 
 " Core
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'JazzCore/ctrlp-cmatcher'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-endwise'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'matchit.zip'
 Plugin 'michaeljsmith/vim-indent-object'
 Plugin 'kana/vim-textobj-user'
@@ -27,6 +28,7 @@ Plugin 'kana/vim-textobj-user'
 " Tools
 Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'janko-m/vim-test'
 
 " Languages
 Plugin 'nelstrom/vim-textobj-rubyblock'
@@ -37,7 +39,15 @@ Plugin 'rust-lang/rust.vim'
 Plugin 'fatih/vim-go'
 Plugin 'tpope/vim-markdown'
 Plugin 'exu/pgsql.vim'
-Plugin 'thoughtbot/vim-rspec'
+"Plugin 'thoughtbot/vim-rspec'
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'othree/yajs.vim'
+Plugin 'hmarr/vim-gemfile'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'lambdatoast/elm.vim'
+Plugin 'hashivim/vim-terraform'
+
+Plugin 'flazz/vim-colorschemes'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -95,6 +105,8 @@ set list
 set listchars=tab:▸\ ,trail:•
 " Ignore crap in wildcard completion
 set wildignore+=*.o,*.obj,.git,*.pyc,node_modules
+" Make backspace sane (e.g. don't stop backspacing at the start of inserted text)
+set backspace=indent,eol,start
 " Enable filetype settings (inc. indentation), files in .vim/ftplugin are read
 filetype off
 filetype plugin indent on
@@ -190,6 +202,8 @@ nnoremap vv ^vg_
 " Switch tabs easily
 nnoremap ˙ gT
 nnoremap ¬ gt
+nnoremap <esc>h gT
+nnoremap <esc>l gt
 
 " Shortcuts for enabling / disabling search highlighting
 nnoremap ,hl :set hls<CR>
@@ -223,6 +237,15 @@ let g:ag_mapping_message = 0
 " Posh airline glyphs
 let g:airline_powerline_fonts = 1
 
+" Run tests in neovim terminal
+"let test#strategy = "neovim"
+
+" Make vim not take 1 year to start when using JRuby
+let g:ruby_path=system('which ruby')
+
+" Give me my ctrl-c back, you bastard!
+let g:ftplugin_sql_omni_key = '<C-j>'
+
 " }}}
 
 " Autocommands ==================================================== {{{
@@ -252,9 +275,12 @@ if has("autocmd")
     " gitconfig uses tabs when `git config --global ...` is used
     autocmd FileType gitconfig setlocal noexpandtab
 
-    " Use {{{ - }}} style folds in vimscript and zshrc
+    " Use {{{ - }}} style folds
+    autocmd FileType css setlocal foldmethod=marker
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType zsh setlocal foldmethod=marker
+
+  autocmd BufNewFile,BufRead Jarfile set filetype=ruby
 endif
 
 " }}}
@@ -281,15 +307,36 @@ if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
 
+" Reason
+if !empty(system('which opam'))
+  " Merlin plugin
+  let s:ocamlmerlin=substitute(system('opam config var share'),'\n$','','') . "/merlin"
+  execute "set rtp+=".s:ocamlmerlin."/vim"
+  execute "set rtp+=".s:ocamlmerlin."/vimbufsync"
+  let g:syntastic_ocaml_checkers=['merlin']
+
+  " Reason plugin which uses Merlin
+  let s:reasondir=substitute(system('opam config var share'),'\n$','','') . "/reason"
+  execute "set rtp+=".s:reasondir."/editorSupport/VimReason"
+  let g:syntastic_reason_checkers=['merlin']
+else
+endif
+
 " }}}
 
 " Testing ========================================================= {{{
 
 " Rspec.vim mappings
-map <Leader>TT :call RunCurrentSpecFile()<CR>
-map <Leader>TS :call RunNearestSpec()<CR>
-map <Leader>TL :call RunLastSpec()<CR>
-map <Leader>TA :call RunAllSpecs()<CR>
+"map <Leader>TT :call RunCurrentSpecFile()<CR>
+"map <Leader>TS :call RunNearestSpec()<CR>
+"map <Leader>TL :call RunLastSpec()<CR>
+"map <Leader>TA :call RunAllSpecs()<CR>
+
+nmap <silent> <leader>TS :TestNearest<CR>
+nmap <silent> <leader>TT :TestFile<CR>
+nmap <silent> <leader>TA :TestSuite<CR>
+nmap <silent> <leader>TL :TestLast<CR>
+nmap <silent> <leader>TG :TestVisit<CR>
 
 noremap <leader>m :make<CR>
 
