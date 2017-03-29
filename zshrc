@@ -77,6 +77,9 @@ if [[ -r ~/.ssh/config ]]; then
 fi
 zstyle ':completion:*:hosts' hosts $_ssh_config
 
+# Complete Ruby versions with chruby
+compctl -g '~/.rubies/*(:t)' chruby
+
 # }}}
 
 # General config {{{
@@ -96,7 +99,8 @@ autoload -Uz compinit
 compinit
 
 # Select menu items when tabbing through
-zstyle ':completion:*' menu select
+zstyle ':completion:*' menu select list-colors "${(@s.:.)LS_COLORS}"
+
 
 # Load the color constants (e.g. $fg)
 autoload -Uz colors
@@ -116,14 +120,14 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:*' unstagedstr '*'
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f"
+zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f%{$reset_color%}"
 precmd() {
   vcs_info
 }
 
 function {
   local prompt_character="%(?,%{$fg[green]%},%{$fg[red]%})%(!,#,$)%{$reset_color%}"
-  local cwd="%{$fg[grey]%}%c%{$reset_color%}"
+  local cwd="%F{009}%c%f"
 
   PROMPT="$cwd $prompt_character "
   RPROMPT='${vcs_info_msg_0_}'
@@ -170,12 +174,15 @@ batt() {
 
 # }}}
 
-# Custom initialisation {{{
+# Languages {{{
 
-#ch-go 1.4.2
-#ch-python 2.7.10
-#ch-node 4.1.0
-#chruby ruby-2.3.0
+# Ruby
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+chruby ruby-2.4.1
+
+# Node
+n 7.8.0
 
 # }}}
 
