@@ -1,56 +1,47 @@
 " Author: Harry Marr <harry@hmarr.com>
-" Source: https://github.com/hmarr/dotfiles/tree/master/vimrc
+" Source: https://github.com/hmarr/dotfiles/tree/master/nvim-init.vim
 
-" Vundle Dependencies ============================================= {{{
+" Dependencies ==================================================== {{{
 
-set nocompatible  " be iMproved
-filetype off      " required for vundle
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'gmarik/Vundle.vim'
+call plug#begin('~/.config/nvim/plugged')
 
 " Core
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'JazzCore/ctrlp-cmatcher'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'tpope/vim-surround'
-Plugin 'Raimondi/delimitMate'
-Plugin 'tpope/vim-endwise'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'matchit.zip'
-Plugin 'michaeljsmith/vim-indent-object'
-Plugin 'kana/vim-textobj-user'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-surround'
+"Plug 'Raimondi/delimitMate'
+"Plug 'tpope/vim-endwise'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+"Plug 'matchit.zip'
+"Plug 'michaeljsmith/vim-indent-object'
+"Plug 'kana/vim-textobj-user'
 
 " Tools
-Plugin 'rking/ag.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'janko-m/vim-test'
+Plug 'rking/ag.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'janko-m/vim-test'
 
 " Languages
-Plugin 'nelstrom/vim-textobj-rubyblock'
-Plugin 'tpope/vim-rails'
-Plugin 'elzr/vim-json'
-Plugin 'othree/html5.vim'
-Plugin 'rust-lang/rust.vim'
-Plugin 'fatih/vim-go'
-Plugin 'tpope/vim-markdown'
-Plugin 'exu/pgsql.vim'
-"Plugin 'thoughtbot/vim-rspec'
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'othree/yajs.vim'
-Plugin 'hmarr/vim-gemfile'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'lambdatoast/elm.vim'
-Plugin 'hashivim/vim-terraform'
+"Plug 'nelstrom/vim-textobj-rubyblock'
+"Plug 'tpope/vim-rails'
+"Plug 'elzr/vim-json'
+"Plug 'othree/html5.vim'
+"Plug 'rust-lang/rust.vim'
+"Plug 'fatih/vim-go'
+"Plug 'tpope/vim-markdown'
+"Plug 'exu/pgsql.vim'
+"Plug 'elixir-lang/vim-elixir'
+"Plug 'othree/yajs.vim'
+"Plug 'hmarr/vim-gemfile'
+"Plug 'leafgarland/typescript-vim'
+"Plug 'lambdatoast/elm.vim'
+"Plug 'hashivim/vim-terraform'
 
-Plugin 'flazz/vim-colorschemes'
+"Plug 'flazz/vim-colorschemes'
+Plug 'jdkanani/vim-material-theme'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()            " required
+"filetype plugin indent on    " required
 
 " }}}
 
@@ -97,7 +88,7 @@ set encoding=utf-8
 " Make backup files
 set backup
 " Location of backup files
-set backupdir=~/.vim/backup
+set backupdir=~/.config/nvim/backup
 " Fuck swap files
 set noswapfile
 " Show tabs and trailing whitespace
@@ -124,10 +115,10 @@ if exists("&colorcolumn")
     set colorcolumn=80
 endif
 
-" Solarized is awesome
-colorscheme solarized
-" Light solarized colour scheme
-set background=light
+" Make it pretty
+set termguicolors
+set background=dark
+colorscheme material-theme
 
 " Disable slow regex engine for faster syntax highlighting
 if v:version >= 704
@@ -222,9 +213,6 @@ cmap w!! w !sudo tee % >/dev/null
 
 " Plugin Options ================================================== {{{
 
-" Actually good ctrl-p matcher, more like cmd-t
-let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
-
 if executable('ag')
   " If ag is available, use it for ctrl p, as it's super quick
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -233,9 +221,6 @@ endif
 
 " ag.vim mapping message is too long
 let g:ag_mapping_message = 0
-
-" Posh airline glyphs
-let g:airline_powerline_fonts = 1
 
 " Run tests in neovim terminal
 "let test#strategy = "neovim"
@@ -269,7 +254,7 @@ if has("autocmd")
     " Tell go files to use tabs(!) for indentation
     autocmd FileType go setlocal nolist noexpandtab
     autocmd FileType go setlocal softtabstop=4 shiftwidth=4 tabstop=4
-    autocmd FileType go setlocal makeprg=go\ run\ %
+    "autocmd FileType go setlocal makeprg=go\ run\ %
     " Makefiles use tabs only
     autocmd FileType make setlocal noexpandtab
     " gitconfig uses tabs when `git config --global ...` is used
@@ -307,30 +292,9 @@ if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
 
-" Reason
-if !empty(system('which opam'))
-  " Merlin plugin
-  let s:ocamlmerlin=substitute(system('opam config var share'),'\n$','','') . "/merlin"
-  execute "set rtp+=".s:ocamlmerlin."/vim"
-  execute "set rtp+=".s:ocamlmerlin."/vimbufsync"
-  let g:syntastic_ocaml_checkers=['merlin']
-
-  " Reason plugin which uses Merlin
-  let s:reasondir=substitute(system('opam config var share'),'\n$','','') . "/reason"
-  execute "set rtp+=".s:reasondir."/editorSupport/VimReason"
-  let g:syntastic_reason_checkers=['merlin']
-else
-endif
-
 " }}}
 
 " Testing ========================================================= {{{
-
-" Rspec.vim mappings
-"map <Leader>TT :call RunCurrentSpecFile()<CR>
-"map <Leader>TS :call RunNearestSpec()<CR>
-"map <Leader>TL :call RunLastSpec()<CR>
-"map <Leader>TA :call RunAllSpecs()<CR>
 
 nmap <silent> <leader>TS :TestNearest<CR>
 nmap <silent> <leader>TT :TestFile<CR>
