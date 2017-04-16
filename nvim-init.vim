@@ -8,6 +8,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Core
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
+Plug 'cohama/lexima.vim'
 "Plug 'Raimondi/delimitMate'
 "Plug 'tpope/vim-endwise'
 "Plug 'vim-airline/vim-airline'
@@ -15,6 +16,7 @@ Plug 'tpope/vim-surround'
 "Plug 'matchit.zip'
 "Plug 'michaeljsmith/vim-indent-object'
 "Plug 'kana/vim-textobj-user'
+Plug 'junegunn/fzf.vim'
 
 " Tools
 Plug 'rking/ag.vim'
@@ -22,26 +24,26 @@ Plug 'tpope/vim-fugitive'
 Plug 'janko-m/vim-test'
 
 " Languages
+Plug 'keith/swift.vim'
 "Plug 'nelstrom/vim-textobj-rubyblock'
-"Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rake'
 "Plug 'elzr/vim-json'
 "Plug 'othree/html5.vim'
-"Plug 'rust-lang/rust.vim'
-"Plug 'fatih/vim-go'
+Plug 'rust-lang/rust.vim'
+Plug 'fatih/vim-go'
 "Plug 'tpope/vim-markdown'
 "Plug 'exu/pgsql.vim'
-"Plug 'elixir-lang/vim-elixir'
+Plug 'elixir-lang/vim-elixir'
 "Plug 'othree/yajs.vim'
-"Plug 'hmarr/vim-gemfile'
+Plug 'hmarr/vim-gemfile'
 "Plug 'leafgarland/typescript-vim'
 "Plug 'lambdatoast/elm.vim'
 "Plug 'hashivim/vim-terraform'
 
-"Plug 'flazz/vim-colorschemes'
 Plug 'jdkanani/vim-material-theme'
 
-call plug#end()            " required
-"filetype plugin indent on    " required
+call plug#end()
 
 " }}}
 
@@ -109,6 +111,8 @@ set completeopt+=longest
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
 set splitright
+" Show line numbers
+set number
 
 " Highlight 80th column so code can still be pretty in full-screen terminals
 if exists("&colorcolumn")
@@ -118,6 +122,8 @@ endif
 " Make it pretty
 set termguicolors
 set background=dark
+" Don't hide the ~ characters at the end of the buffer
+let g:material_hide_endofbuffer = 0
 colorscheme material-theme
 
 " Disable slow regex engine for faster syntax highlighting
@@ -151,10 +157,10 @@ inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
 
 " Easy buffer navigation
-noremap <C-h>  <C-w>h
-noremap <C-j>  <C-w>j
-noremap <C-k>  <C-w>k
-noremap <C-l>  <C-w>l
+noremap <c-h>  <c-w>h
+noremap <c-j>  <c-w>j
+noremap <c-k>  <c-w>k
+noremap <c-l>  <c-w>l
 noremap <leader>v <c-w>v
 
 " Make Y yank rest of line, like D and C
@@ -209,6 +215,9 @@ vnoremap <A-k> :m-2<CR>gv=gv
 " Write files with sudo if opened without priviliedges
 cmap w!! w !sudo tee % >/dev/null
 
+" Fuzzy file searching
+nnoremap <c-p> :FZF<CR>
+
 " }}}
 
 " Plugin Options ================================================== {{{
@@ -223,13 +232,16 @@ endif
 let g:ag_mapping_message = 0
 
 " Run tests in neovim terminal
-"let test#strategy = "neovim"
+let test#strategy = "neovim"
 
 " Make vim not take 1 year to start when using JRuby
 let g:ruby_path=system('which ruby')
 
 " Give me my ctrl-c back, you bastard!
 let g:ftplugin_sql_omni_key = '<C-j>'
+
+" Tell fzf to use the copy installed by homebrew
+set rtp+=/usr/local/opt/fzf
 
 " }}}
 
