@@ -127,7 +127,7 @@ precmd() {
 
 function {
   local prompt_character="%(?,%{$fg[green]%},%{$fg[red]%})%(!,#,$)%{$reset_color%}"
-  local cwd="%F{009}%c%f"
+  local cwd="%F{250}%c%f"
 
   PROMPT="$cwd $prompt_character "
   RPROMPT='${vcs_info_msg_0_}'
@@ -137,11 +137,11 @@ function {
 
 # Custom functions {{{
 
-jp() { cd ~/projects/$1 }
-compctl -W ~/projects -/ jp
+jp() { cd ~/code/$1 }
+compctl -W ~/code -/ jp
 
-jgo() { cd ~/projects/go/src/github.com/$1 }
-compctl -W ~/projects/go/src/github.com -/ jgo
+jgo() { cd ~/code/go/src/github.com/$1 }
+compctl -W ~/code/go/src/github.com -/ jgo
 
 vpn() {
   local vpn="${1:-💼 GoCardless}"
