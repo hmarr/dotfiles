@@ -17,6 +17,7 @@ Plug 'cohama/lexima.vim'
 "Plug 'michaeljsmith/vim-indent-object'
 "Plug 'kana/vim-textobj-user'
 Plug 'junegunn/fzf.vim'
+Plug 'sbdchd/neoformat'
 
 " Tools
 Plug 'rking/ag.vim'
@@ -36,7 +37,10 @@ Plug 'fatih/vim-go'
 "Plug 'exu/pgsql.vim'
 Plug 'elixir-lang/vim-elixir'
 "Plug 'othree/yajs.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 Plug 'hmarr/vim-gemfile'
+Plug 'leafgarland/typescript-vim'
 "Plug 'leafgarland/typescript-vim'
 "Plug 'lambdatoast/elm.vim'
 "Plug 'hashivim/vim-terraform'
@@ -116,7 +120,7 @@ set number
 
 " Highlight 80th column so code can still be pretty in full-screen terminals
 if exists("&colorcolumn")
-    set colorcolumn=80
+  set colorcolumn=80
 endif
 
 " Make it pretty
@@ -243,39 +247,45 @@ let g:ftplugin_sql_omni_key = '<C-j>'
 " Tell fzf to use the copy installed by homebrew
 set rtp+=/usr/local/opt/fzf
 
+" Use ag to find files for fzf, so .gitignore and friends are honoured
+let $FZF_DEFAULT_COMMAND= 'ag -g ""'
+
+" Make vim-jsx work for .js files
+let g:jsx_ext_required = 0
+
 " }}}
 
 " Autocommands ==================================================== {{{
 
 if has("autocmd")
-    " Clean up whitespace on save
-    autocmd BufWritePre * CleanWhitespace
-    " Tell python files to use four spaces for indentation
-    autocmd FileType python setlocal softtabstop=4 shiftwidth=4 tabstop=4
-    " Tell ruby files to use two spaces for indentation
-    autocmd FileType ruby setlocal softtabstop=2 shiftwidth=2 tabstop=4
-    "autocmd FileType ruby let b:delimitMate_expand_cr = 0
-    " Tell json files to use two spaces for indentation
-    autocmd FileType json setlocal softtabstop=2 shiftwidth=2 tabstop=4
-    " Tell javascript files to use two spaces for indentation
-    autocmd FileType javascript setlocal softtabstop=2 shiftwidth=2 tabstop=4
-    " Tell coffeescript files to use two spaces for indentation
-    autocmd FileType coffee setlocal softtabstop=2 shiftwidth=2 tabstop=4
-    " Tell scala files to use two spaces for indentation
-    autocmd FileType scala setlocal softtabstop=2 shiftwidth=2 tabstop=4
-    " Tell go files to use tabs(!) for indentation
-    autocmd FileType go setlocal nolist noexpandtab
-    autocmd FileType go setlocal softtabstop=4 shiftwidth=4 tabstop=4
-    "autocmd FileType go setlocal makeprg=go\ run\ %
-    " Makefiles use tabs only
-    autocmd FileType make setlocal noexpandtab
-    " gitconfig uses tabs when `git config --global ...` is used
-    autocmd FileType gitconfig setlocal noexpandtab
+  " Clean up whitespace on save
+  autocmd BufWritePre * CleanWhitespace
+  " Tell python files to use four spaces for indentation
+  autocmd FileType python setlocal softtabstop=4 shiftwidth=4 tabstop=4
+  " Tell ruby files to use two spaces for indentation
+  autocmd FileType ruby setlocal softtabstop=2 shiftwidth=2 tabstop=4
+  "autocmd FileType ruby let b:delimitMate_expand_cr = 0
+  " Tell json files to use two spaces for indentation
+  autocmd FileType json setlocal softtabstop=2 shiftwidth=2 tabstop=4
+  " Tell javascript files to use two spaces for indentation
+  autocmd FileType javascript setlocal softtabstop=2 shiftwidth=2 tabstop=4
+  " Tell coffeescript files to use two spaces for indentation
+  autocmd FileType coffee setlocal softtabstop=2 shiftwidth=2 tabstop=4
+  " Tell scala files to use two spaces for indentation
+  autocmd FileType scala setlocal softtabstop=2 shiftwidth=2 tabstop=4
+  " Tell go files to use tabs(!) for indentation
+  autocmd FileType go setlocal nolist noexpandtab
+  autocmd FileType go setlocal softtabstop=4 shiftwidth=4 tabstop=4
+  "autocmd FileType go setlocal makeprg=go\ run\ %
+  " Makefiles use tabs only
+  autocmd FileType make setlocal noexpandtab
+  " gitconfig uses tabs when `git config --global ...` is used
+  autocmd FileType gitconfig setlocal noexpandtab
 
-    " Use {{{ - }}} style folds
-    autocmd FileType css setlocal foldmethod=marker
-    autocmd FileType vim setlocal foldmethod=marker
-    autocmd FileType zsh setlocal foldmethod=marker
+  " Use {{{ - }}} style folds
+  autocmd FileType css setlocal foldmethod=marker
+  autocmd FileType vim setlocal foldmethod=marker
+  autocmd FileType zsh setlocal foldmethod=marker
 
   autocmd BufNewFile,BufRead Jarfile set filetype=ruby
 endif
@@ -286,22 +296,27 @@ endif
 
 " Remove trailing whitespace
 function! <SID>CleanWhitespace()
-    " Preparation - save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    " Do the business:
-    %s/\s\+$//e
-    " Clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
+  " Preparation - save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  %s/\s\+$//e
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
 endfunction
 command CleanWhitespace call <SID>CleanWhitespace()
 
 
 " Source a global configuration file if available
 if filereadable(expand("$HOME/.vimrc.local"))
-    source $HOME/.vimrc.local
+  source $HOME/.vimrc.local
+endif
+
+" Per-directory vimrc files
+if !empty($LOCAL_VIMRC)
+  set secure exrc
 endif
 
 " }}}

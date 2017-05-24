@@ -11,15 +11,10 @@ alias g="git"
 alias gst="git status"
 alias vim="nvim"
 alias vi="nvim"
-alias vip="nvim \$(fzf)"
+alias vip="nvim -c :FZF"
 alias bx="bundle exec"
 
 alias -g router_ip="\$(route -n get default -ifscope en0 | awk '/gateway/ { print \$2 }')"
-
-alias sknife="KNIFE_ENV=staging knife"
-alias pknife="KNIFE_ENV=production knife"
-alias sssh="sknife ssh --ssh-user hmarr --ssh-port 61315 -a softlayer.private_ip"
-alias pssh="pknife ssh --ssh-user hmarr --ssh-port 61315 -a softlayer.private_ip"
 
 alias docker-killall="docker ps | tail -n +2 | cut -f1 -d' ' | xargs docker kill"
 alias docker-cleanup="docker ps -a | cut -f1 -d' ' | tail -n +2 | xargs docker rm"
@@ -137,7 +132,22 @@ function {
 
 # Custom functions {{{
 
-jp() { cd ~/code/$1 }
+jp() {
+  local candidates="$(find $HOME/code -mindepth 2 -maxdepth 2 -type d |
+    cut -f5- -d/ |
+    grep -v "/\.")"
+  if [ -z "$1" ]; then
+    local dir="$(echo $candidates | fzf)"
+    [[ $? == 0 ]] && cd "$HOME/code/$dir"
+  else
+    if [ -d "$HOME/code/$1" ]; then
+      cd "$HOME/code/$1"
+    else
+      local dir="$(echo $candidates | fzf --select-1 --query "$1")"
+      [[ $? == 0 ]] && cd "$HOME/code/$dir"
+    fi
+  fi
+}
 compctl -W ~/code -/ jp
 
 jgo() { cd ~/code/go/src/github.com/$1 }
@@ -183,6 +193,9 @@ chruby ruby-2.4.1
 
 # Node
 n 7.8.0
+
+# Direnv, which helps switch between projects
+eval "$(direnv hook zsh)"
 
 # }}}
 

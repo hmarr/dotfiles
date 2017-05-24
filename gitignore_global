@@ -3,3 +3,4 @@
 .agignore
 .envrc
 .nvimrc
+.vscode
