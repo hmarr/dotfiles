@@ -134,18 +134,19 @@ function {
 # Custom functions {{{
 
 jp() {
-  local candidates="$(find $HOME/code -mindepth 2 -maxdepth 2 -type d |
+  local code_dir="$HOME/src"
+  local candidates="$(find $code_dir -mindepth 3 -maxdepth 3 -type d |
     cut -f5- -d/ |
     grep -v "/\.")"
   if [ -z "$1" ]; then
     local dir="$(echo $candidates | fzf)"
-    [[ $? == 0 ]] && cd "$HOME/code/$dir"
+    [[ $? == 0 ]] && cd "$code_dir/$dir"
   else
-    if [ -d "$HOME/code/$1" ]; then
-      cd "$HOME/code/$1"
+    if [ -d "$code_dir/$1" ]; then
+      cd "$code_dir/$1"
     else
       local dir="$(echo $candidates | fzf --select-1 --query "$1")"
-      [[ $? == 0 ]] && cd "$HOME/code/$dir"
+      [[ $? == 0 ]] && cd "$code_dir/$dir"
     fi
   fi
 }
@@ -204,13 +205,15 @@ notify() {
 # Ruby
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
-chruby ruby-2.4.1
+[ -d ~/.rubies ] && chruby ruby-2.4.1
 
 # Node
-n 7.8.0
+n 8.1.3
 
 # Direnv, which helps switch between projects
 eval "$(direnv hook zsh)"
 
 # }}}
+
+[ -f $HOME/.zshrc_local/zshrc ] && source $HOME/.zshrc_local/zshrc
 
