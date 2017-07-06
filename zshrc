@@ -117,6 +117,7 @@ zstyle ':vcs_info:*' unstagedstr '*'
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f%{$reset_color%}"
 precmd() {
+  type notify-after-command > /dev/null && _post_cmd_notify
   vcs_info
 }
 
@@ -180,6 +181,20 @@ batt() {
   time_remaining=$(pmset -g batt | egrep "([0-9]+:[0-9]+)" -o)
   pct_remaining=$(pmset -g batt | egrep "([0-9]+\%)" -o)
   echo "$time_remaining remaining ($pct_remaining)"
+}
+
+_post_cmd_notify() {
+  LAST_EXIT_CODE=$?
+  CMD=$(fc -ln -1)
+  (notify-after-command "$CMD" "$LAST_EXIT_CODE" &) &> /dev/null
+}
+
+notify() {
+  osascript \
+    -e 'on run argv' \
+    -e '  display notification item 1 of argv with title "Terminal"' \
+    -e 'end' \
+    -- $@
 }
 
 # }}}
