@@ -8,7 +8,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Core
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
-Plug 'cohama/lexima.vim'
+"Plug 'cohama/lexima.vim'
 "Plug 'Raimondi/delimitMate'
 "Plug 'tpope/vim-endwise'
 "Plug 'vim-airline/vim-airline'
