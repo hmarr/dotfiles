@@ -140,7 +140,7 @@ jp() {
     grep -v "/\.")"
   if [ -z "$1" ]; then
     local dir="$(echo $candidates | fzf)"
-    [[ $? == 0 ]] && cd "$code_dir/$dir"
+    [[ $? == 0 && -n "$dir" ]] && cd "$code_dir/$dir" || true
   else
     if [ -d "$code_dir/$1" ]; then
       cd "$code_dir/$1"
