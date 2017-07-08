@@ -253,6 +253,9 @@ let $FZF_DEFAULT_COMMAND= 'ag -g ""'
 " Make vim-jsx work for .js files
 let g:jsx_ext_required = 0
 
+" Use goimports rather than gofmt
+let g:go_fmt_command = "goimports"
+
 " }}}
 
 " Autocommands ==================================================== {{{
