@@ -8,14 +8,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Core
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
-"Plug 'cohama/lexima.vim'
-"Plug 'Raimondi/delimitMate'
-"Plug 'tpope/vim-endwise'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
-"Plug 'matchit.zip'
-"Plug 'michaeljsmith/vim-indent-object'
-"Plug 'kana/vim-textobj-user'
 Plug 'junegunn/fzf.vim'
 Plug 'sbdchd/neoformat'
 
@@ -26,25 +18,17 @@ Plug 'janko-m/vim-test'
 
 " Languages
 Plug 'keith/swift.vim'
-"Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
-"Plug 'elzr/vim-json'
-"Plug 'othree/html5.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'fatih/vim-go'
-"Plug 'tpope/vim-markdown'
-"Plug 'exu/pgsql.vim'
 Plug 'elixir-lang/vim-elixir'
-"Plug 'othree/yajs.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'hmarr/vim-gemfile'
 Plug 'leafgarland/typescript-vim'
-"Plug 'leafgarland/typescript-vim'
-"Plug 'lambdatoast/elm.vim'
-"Plug 'hashivim/vim-terraform'
 
+" Other
 Plug 'jdkanani/vim-material-theme'
 
 call plug#end()
