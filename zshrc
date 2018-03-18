@@ -133,8 +133,8 @@ function {
 
 # Custom functions {{{
 
+code_dir="$HOME/src"
 jp() {
-  local code_dir="$HOME/src"
   local candidates="$(find $code_dir -mindepth 3 -maxdepth 3 -type d |
     cut -f5- -d/ |
     grep -v "/\.")"
@@ -150,7 +150,7 @@ jp() {
     fi
   fi
 }
-compctl -W ~/code -/ jp
+compctl -W "$code_dir" -/ jp
 
 jgo() { cd ~/code/go/src/github.com/$1 }
 compctl -W ~/code/go/src/github.com -/ jgo
@@ -207,13 +207,10 @@ source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
 [ -d ~/.rubies ] && chruby ruby-2.4.1
 
-# Node
-n 8.1.3
-
 # Direnv, which helps switch between projects
 eval "$(direnv hook zsh)"
 
 # }}}
 
-[ -f $HOME/.zshrc_local/zshrc ] && source $HOME/.zshrc_local/zshrc
+[ -f $HOME/.zshrc_local/zshrc ] && source $HOME/.zshrc_local/zshrc || true
 
