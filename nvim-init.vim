@@ -10,6 +10,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf.vim'
 Plug 'sbdchd/neoformat'
+Plug 'w0rp/ale'
 
 " Tools
 Plug 'rking/ag.vim'
