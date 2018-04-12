@@ -11,6 +11,7 @@ Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf.vim'
 Plug 'sbdchd/neoformat'
 Plug 'w0rp/ale'
+Plug 'yssl/QFEnter'
 
 " Tools
 Plug 'rking/ag.vim'
@@ -97,6 +98,8 @@ set title
 let &titleold=getcwd()
 " Don't autocomplete full names, only longest prefix
 set completeopt+=longest
+" Don't open the scratch window when c-x c-o autocompleting
+set completeopt-=preview
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
 set splitright
@@ -198,8 +201,12 @@ nnoremap ,nhl :set nohls<CR>
 " Use alt + {j,k} for moving lines up and down
 nnoremap <A-j> :m+<CR>==
 nnoremap <A-k> :m-2<CR>==
+nnoremap ∆ :m+<CR>==
+nnoremap ˚ :m-2<CR>==
 vnoremap <A-j> :m'>+<CR>gv=gv
 vnoremap <A-k> :m-2<CR>gv=gv
+vnoremap ∆ :m'>+<CR>gv=gv
+vnoremap ˚ :m-2<CR>gv=gv
 
 " Write files with sudo if opened without priviliedges
 cmap w!! w !sudo tee % >/dev/null
@@ -233,13 +240,20 @@ let g:ftplugin_sql_omni_key = '<C-j>'
 set rtp+=/usr/local/opt/fzf
 
 " Use ag to find files for fzf, so .gitignore and friends are honoured
-let $FZF_DEFAULT_COMMAND= 'ag -g ""'
+"let $FZF_DEFAULT_COMMAND= 'ag -g ""'
+let $FZF_DEFAULT_COMMAND='rg --files --hidden'
 
 " Make vim-jsx work for .js files
 let g:jsx_ext_required = 0
 
 " Use goimports rather than gofmt
 let g:go_fmt_command = "goimports"
+
+" More familiar quickfix and location list shortcuts
+let g:qfenter_keymap = {}
+let g:qfenter_keymap.vopen = ['<C-v>']
+let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
+let g:qfenter_keymap.topen = ['<C-t>']
 
 " }}}
 

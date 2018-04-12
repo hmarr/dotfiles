@@ -75,6 +75,12 @@ zstyle ':completion:*:hosts' hosts $_ssh_config
 # Complete Ruby versions with chruby
 compctl -g '~/.rubies/*(:t)' chruby
 
+# fzf fuzzy completion
+source "$HOME/.fzf.zsh"
+export FZF_COMPLETION_TRIGGER=''
+bindkey '^T' fzf-completion
+bindkey '^I' $fzf_default_completion
+
 # }}}
 
 # General config {{{
@@ -121,11 +127,19 @@ precmd() {
   vcs_info
 }
 
+function prompt_language_env {
+  local language_env=""
+  if [ -n "$VIRTUAL_ENV" ]; then
+    language_env="🐍  "
+  fi
+  echo "$language_env"
+}
+
 function {
   local prompt_character="%(?,%{$fg[green]%},%{$fg[red]%})%(!,#,$)%{$reset_color%}"
   local cwd="%F{250}%c%f"
 
-  PROMPT="$cwd $prompt_character "
+  PROMPT="\$(prompt_language_env)${cwd} ${prompt_character} "
   RPROMPT='${vcs_info_msg_0_}'
 }
 
@@ -198,6 +212,16 @@ notify() {
     -- $@
 }
 
+gh-pr() {
+  if git rev-parse --git-dir > /dev/null 2>&1; then
+    repo=$(git remote get-url origin|sed "s/:/\\//; s/\\.git//; s/git@/https:\\/\\//")
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    open "${repo}/compare/${branch}?expand=1"
+  else
+    echo "not in a git repo"
+  fi
+}
+
 # }}}
 
 # Languages {{{
@@ -205,12 +229,13 @@ notify() {
 # Ruby
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
-[ -d ~/.rubies ] && chruby ruby-2.4.1
+[ -d ~/.rubies ] && chruby ruby-2.4.2
 
 # Direnv, which helps switch between projects
 eval "$(direnv hook zsh)"
 
 # }}}
 
+[ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
 [ -f $HOME/.zshrc_local/zshrc ] && source $HOME/.zshrc_local/zshrc || true
 
