@@ -43,10 +43,8 @@ set wildmenu
 set laststatus=2
 " Necessary to show unicode glyphs
 set encoding=utf-8
-" Make backup files
-set backup
-" Location of backup files
-set backupdir=~/.config/nvim/backup
+" Don't make backup files
+set nobackup
 " Fuck swap files
 set noswapfile
 " Show tabs and trailing whitespace
