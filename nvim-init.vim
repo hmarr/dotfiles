@@ -17,6 +17,7 @@ Plug 'yssl/QFEnter'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'janko-m/vim-test'
+Plug 'tpope/vim-projectionist'
 
 " Languages
 Plug 'keith/swift.vim'
@@ -255,6 +256,16 @@ let g:qfenter_keymap.vopen = ['<C-v>']
 let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
 let g:qfenter_keymap.topen = ['<C-t>']
 
+let g:ale_linters = {
+\   'javascript': [],
+\}
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\}
+let g:ale_fix_on_save = 1
+
+let g:neoformat_only_msg_on_error = 1
+
 " }}}
 
 " Autocommands ==================================================== {{{
@@ -271,6 +282,7 @@ if has("autocmd")
   autocmd FileType json setlocal softtabstop=2 shiftwidth=2 tabstop=4
   " Tell javascript files to use two spaces for indentation
   autocmd FileType javascript setlocal softtabstop=2 shiftwidth=2 tabstop=4
+  "autocmd BufWritePre *.js Neoformat
   " Tell coffeescript files to use two spaces for indentation
   autocmd FileType coffee setlocal softtabstop=2 shiftwidth=2 tabstop=4
   " Tell scala files to use two spaces for indentation
