@@ -1,7 +1,10 @@
+gitignored
 .DS_Store
 .bundle
 .agignore
 .envrc
 .nvimrc
 .vscode
-gitignored
+.projections.json
+.dockerignore
+.byebug_history
