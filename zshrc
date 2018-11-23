@@ -18,8 +18,14 @@ alias -g router_ip="\$(route -n get default -ifscope en0 | awk '/gateway/ { prin
 
 alias docker-killall="docker ps | tail -n +2 | cut -f1 -d' ' | xargs docker kill"
 alias docker-cleanup="docker ps -a | cut -f1 -d' ' | tail -n +2 | xargs docker rm"
+alias docker-exec-latest="docker exec -ti \$(docker ps --latest --quiet) bash"
 
 alias fix-audio="sudo launchctl unload /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist && sudo launchctl load /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist"
+alias rubocop-changed="git ls-files -m | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop"
+alias kill-gocode="ps -ef | grep \"\$HOME/bin/gocode\" | grep -v grep | awk '{ print $2 }' | xargs kill -9"
+alias flush-dns-cache="sudo killall -HUP mDNSResponder"
+
+alias todo="vim ~/TODO.md"
 
 # }}}
 
@@ -151,6 +157,7 @@ code_dir="$HOME/src"
 jp() {
   local candidates="$(find $code_dir -mindepth 3 -maxdepth 3 -type d |
     cut -f5- -d/ |
+    grep -Ev "^ruby-" |
     grep -v "/\.")"
   if [ -z "$1" ]; then
     local dir="$(echo $candidates | fzf)"
@@ -222,6 +229,18 @@ gh-pr() {
   fi
 }
 
+gh-clone() {
+  if [[ ! "$1" =~ "^[^/]+/[^/]+$" ]]; then
+    echo "invalid repo - format must be ACCOUNT/NAME"
+    return
+  fi
+
+  dest="${code_dir}/github.com/$1"
+  mkdir -p "$dest"
+  git clone "https://github.com/$1" "$dest"
+  cd "$dest"
+}
+
 # }}}
 
 # Languages {{{
@@ -229,7 +248,7 @@ gh-pr() {
 # Ruby
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
-[ -d ~/.rubies ] && chruby ruby-2.4.2
+[ -d ~/.rubies ] && chruby ruby-2.5.3
 
 # Direnv, which helps switch between projects
 eval "$(direnv hook zsh)"
@@ -238,4 +257,3 @@ eval "$(direnv hook zsh)"
 
 [ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
 [ -f $HOME/.zshrc_local/zshrc ] && source $HOME/.zshrc_local/zshrc || true
-
