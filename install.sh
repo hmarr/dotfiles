@@ -24,6 +24,7 @@ link_dotfile() {
 }
 
 link_dotfile "zshrc" ".zshrc"
+link_dotfile "zshenv" ".zshenv"
 link_dotfile "vimrc" ".vimrc"
 link_dotfile "vimrc-vanilla.vim" ".vim/vimrc-vanilla.vim"
 link_dotfile "vimrc-extras.vim" ".vim/vimrc-extras.vim"
