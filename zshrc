@@ -9,9 +9,8 @@ alias ....="cd ../../.."
 
 alias g="git"
 alias gst="git status"
-alias vim="nvim"
-alias vi="nvim"
-alias vip="nvim -c :FZF"
+alias vi="vim"
+alias vip="vim -c :FZF"
 alias bx="bundle exec"
 
 alias -g router_ip="\$(route -n get default -ifscope en0 | awk '/gateway/ { print \$2 }')"
@@ -22,10 +21,11 @@ alias docker-exec-latest="docker exec -ti \$(docker ps --latest --quiet) bash"
 
 alias fix-audio="sudo launchctl unload /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist && sudo launchctl load /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist"
 alias rubocop-changed="git ls-files -m | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop"
-alias kill-gocode="ps -ef | grep \"\$HOME/bin/gocode\" | grep -v grep | awk '{ print $2 }' | xargs kill -9"
+alias kill-gocode="ps -ef | grep \"\$HOME/bin/gocode\" | grep -v grep | awk '{ print \$2 }' | xargs kill -9"
 alias flush-dns-cache="sudo killall -HUP mDNSResponder"
 
 alias todo="vim ~/TODO.md"
+alias tf="terraform"
 
 # }}}
 
@@ -239,6 +239,20 @@ gh-clone() {
   mkdir -p "$dest"
   git clone "https://github.com/$1" "$dest"
   cd "$dest"
+}
+
+docker-debug() {
+  if [ -z "$1" ]; then
+    echo "usage: docker-debug CONTAINER-ID"
+    return 1
+  fi
+
+  docker run --rm -ti \
+    --pid="container:$1" \
+    --net="container:$1" \
+    --cap-add sys_admin \
+    --cap-add sys_ptrace \
+    debug
 }
 
 # }}}
