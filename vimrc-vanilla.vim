@@ -206,6 +206,8 @@ if has("autocmd")
   autocmd FileType zsh setlocal foldmethod=marker
 
   autocmd BufNewFile,BufRead Jarfile set filetype=ruby
+
+  autocmd BufNewFile,BufRead *.dockerfile set filetype=dockerfile
 endif
 
 " }}}
