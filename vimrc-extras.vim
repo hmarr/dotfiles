@@ -59,7 +59,7 @@ endif
 let g:ag_mapping_message = 0
 
 " Run tests in neovim terminal
-let test#strategy = 'neovim'
+let test#strategy = 'vimterminal'
 
 " Make vim not take 1 year to start when using JRuby
 let g:ruby_path=system('which ruby')
@@ -72,13 +72,16 @@ set rtp+=/usr/local/opt/fzf
 
 " Use ag to find files for fzf, so .gitignore and friends are honoured
 "let $FZF_DEFAULT_COMMAND= 'ag -g ""'
-let $FZF_DEFAULT_COMMAND='rg --files --hidden'
+let $FZF_DEFAULT_COMMAND='rg --files --hidden --glob="!.git/" --ignore-file="$HOME/.gitignore_global"'
 
 " Make vim-jsx work for .js files
 let g:jsx_ext_required = 0
 
 " Use goimports rather than gofmt
 let g:go_fmt_command = 'goimports'
+
+" Read the gometalinter config to disable annoying rules
+let g:go_metalinter_command = "gometalinter --config=/Users/harry/.gometalinter"
 
 " More familiar quickfix and location list shortcuts
 let g:qfenter_keymap = {}
@@ -92,7 +95,8 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \}
-let g:ale_fix_on_save = 1
+" Clashes with gofmt?
+"let g:ale_fix_on_save = 1
 
 let g:neoformat_only_msg_on_error = 1
 
