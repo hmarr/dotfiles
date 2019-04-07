@@ -5,7 +5,7 @@
 "
 " Dependencies ==================================================== {{{
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " Core
 Plug 'scrooloose/nerdcommenter'

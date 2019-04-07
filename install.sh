@@ -24,9 +24,9 @@ link_dotfile() {
 }
 
 link_dotfile "zshrc" ".zshrc"
-link_dotfile "nvim-init.vim" ".config/nvim/init.vim"
-link_dotfile "vimrc-vanilla.vim" ".config/nvim/vimrc-vanilla.vim"
-link_dotfile "vimrc-extras.vim" ".config/nvim/vimrc-extras.vim"
+link_dotfile "vimrc" ".vimrc"
+link_dotfile "vimrc-vanilla.vim" ".vim/vimrc-vanilla.vim"
+link_dotfile "vimrc-extras.vim" ".vim/vimrc-extras.vim"
 link_dotfile "gitconfig" ".gitconfig"
 link_dotfile "gitignore_global" ".gitignore_global"
 link_dotfile "bundle" ".bundle"

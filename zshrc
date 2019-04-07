@@ -259,11 +259,6 @@ docker-debug() {
 
 # Languages {{{
 
-# Ruby
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
-[ -d ~/.rubies ] && chruby ruby-2.5.3
-
 # Direnv, which helps switch between projects
 eval "$(direnv hook zsh)"
 
