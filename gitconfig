@@ -20,3 +20,5 @@
 	autosetuprebase = always
 [commit]
 	verbose = true
+[pull]
+	rebase = true
