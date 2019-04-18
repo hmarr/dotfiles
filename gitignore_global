@@ -3,8 +3,10 @@ gitignored
 .bundle
 .agignore
 .envrc
+.vimrc
 .nvimrc
 .vscode
 .projections.json
 .dockerignore
 .byebug_history
+vendor/
