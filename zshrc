@@ -29,6 +29,8 @@ alias tf="terraform"
 
 alias vimrc="vim -p $HOME/.vimrc $HOME/.vim/vimrc-vanilla.vim $HOME/.vim/vimrc-extras.vim"
 
+alias ecr-login='eval "$(aws ecr get-login --no-include-email)"'
+
 # }}}
 
 # History {{{
