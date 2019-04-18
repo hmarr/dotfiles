@@ -26,7 +26,7 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
 Plug 'hmarr/vim-gemfile'
 Plug 'rust-lang/rust.vim'
-Plug 'fatih/vim-go'
+Plug 'myitcv/govim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -101,6 +101,10 @@ let g:ale_fixers = {
 let g:neoformat_only_msg_on_error = 1
 
 let g:terraform_fmt_on_save=1
+"let omnifunc='go#complete#GocodeComplete'
+
+command GoInfo :echo GOVIMHover()
+nnoremap <leader>w :GoInfo<cr>
 
 " }}}
 
