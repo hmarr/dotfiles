@@ -11,7 +11,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf.vim'
-Plug 'sbdchd/neoformat'
+"Plug 'sbdchd/neoformat'
 Plug 'w0rp/ale'
 Plug 'yssl/QFEnter'
 
@@ -22,16 +22,16 @@ Plug 'janko-m/vim-test'
 Plug 'tpope/vim-projectionist'
 
 " Languages
-Plug 'keith/swift.vim'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
+Plug 'hmarr/vim-gemfile'
 Plug 'rust-lang/rust.vim'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'hmarr/vim-gemfile'
 Plug 'leafgarland/typescript-vim'
+Plug 'hashivim/vim-terraform'
 
 " Other
 Plug 'jdkanani/vim-material-theme'
@@ -99,6 +99,8 @@ let g:ale_fixers = {
 "let g:ale_fix_on_save = 1
 
 let g:neoformat_only_msg_on_error = 1
+
+let g:terraform_fmt_on_save=1
 
 " }}}
 
