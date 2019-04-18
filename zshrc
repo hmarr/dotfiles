@@ -267,6 +267,10 @@ docker-debug() {
 
 # Languages {{{
 
+# asdf to manage lanugage installations
+source $HOME/.asdf/asdf.sh
+source $HOME/.asdf/completions/asdf.bash
+
 # Direnv, which helps switch between projects
 eval "$(direnv hook zsh)"
 
