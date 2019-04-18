@@ -156,7 +156,7 @@ function {
 # Custom functions {{{
 
 code_dir="$HOME/src"
-jp() {
+j() {
   local candidates="$(find $code_dir -mindepth 3 -maxdepth 3 -type d |
     cut -f5- -d/ |
     grep -Ev "^ruby-" |
@@ -173,10 +173,7 @@ jp() {
     fi
   fi
 }
-compctl -W "$code_dir" -/ jp
-
-jgo() { cd ~/code/go/src/github.com/$1 }
-compctl -W ~/code/go/src/github.com -/ jgo
+compctl -W "$code_dir" -/ j
 
 vpn() {
   local vpn="${1:-💼 GoCardless}"
@@ -231,6 +228,15 @@ gh-pr() {
   fi
 }
 
+gh-open() {
+  if git rev-parse --git-dir > /dev/null 2>&1; then
+    repo=$(git remote get-url origin|sed "s/:/\\//; s/\\.git//; s/git@/https:\\/\\//")
+    open "${repo}"
+  else
+    echo "not in a git repo"
+  fi
+}
+
 gh-clone() {
   if [[ ! "$1" =~ "^[^/]+/[^/]+$" ]]; then
     echo "invalid repo - format must be ACCOUNT/NAME"
@@ -239,7 +245,7 @@ gh-clone() {
 
   dest="${code_dir}/github.com/$1"
   mkdir -p "$dest"
-  git clone "https://github.com/$1" "$dest"
+  git clone "git@github.com:$1" "$dest"
   cd "$dest"
 }
 
