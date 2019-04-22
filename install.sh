@@ -31,4 +31,5 @@ link_dotfile "vimrc-extras.vim" ".vim/vimrc-extras.vim"
 link_dotfile "gitconfig" ".gitconfig"
 link_dotfile "gitignore_global" ".gitignore_global"
 link_dotfile "bundle" ".bundle"
+link_dotfile "projections.json" ".projections.json"
 
