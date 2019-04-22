@@ -3,6 +3,11 @@
 red() {
   echo " $(tput setaf 1)$*$(tput setaf 9)"
 }
+
+yellow() {
+  echo " $(tput setaf 3)$*$(tput setaf 9)"
+}
+
 green() {
   echo " $(tput setaf 2)$*$(tput setaf 9)"
 }
@@ -13,7 +18,7 @@ link_dotfile() {
   full_dest="$HOME/$dest"
   if [ -e "$full_dest" ] || [ -L "$full_dest" ]; then
     if [ -L "$full_dest" ] && [ "$full_dest" -ef "$source" ]; then
-      green "✔ $dest is already linked"
+      yellow "✔ $dest is already linked"
     else
       red "✘ $dest already exists"
     fi
