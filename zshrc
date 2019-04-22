@@ -265,6 +265,14 @@ docker-debug() {
     debug
 }
 
+ssh_bin=$(which ssh)
+ssh() {
+  if ! ssh-add -l | grep "$HOME/.ssh/id_rsa" > /dev/null; then
+    ssh-add "$HOME/.ssh/id_rsa"
+  fi
+  $ssh_bin "$@"
+}
+
 # }}}
 
 # Languages {{{
