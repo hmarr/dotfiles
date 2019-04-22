@@ -172,6 +172,9 @@ vnoremap ˚ :m-2<CR>gv=gv
 " Write files with sudo if opened without priviliedges
 cmap w!! w !sudo tee % >/dev/null
 
+" Easily close the preview window
+noremap <leader>z <c-w><c-z>
+
 " }}}
 
 " Autocommands ==================================================== {{{

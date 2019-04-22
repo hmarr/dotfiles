@@ -11,7 +11,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf.vim'
-"Plug 'sbdchd/neoformat'
+Plug 'sbdchd/neoformat'
 Plug 'w0rp/ale'
 Plug 'yssl/QFEnter'
 
@@ -26,7 +26,8 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
 Plug 'hmarr/vim-gemfile'
 Plug 'rust-lang/rust.vim'
-Plug 'myitcv/govim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'elixir-lang/vim-elixir'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -77,12 +78,6 @@ let $FZF_DEFAULT_COMMAND='rg --files --hidden --glob="!.git/" --ignore-file="$HO
 " Make vim-jsx work for .js files
 let g:jsx_ext_required = 0
 
-" Use goimports rather than gofmt
-let g:go_fmt_command = 'goimports'
-
-" Read the gometalinter config to disable annoying rules
-let g:go_metalinter_command = "gometalinter --config=/Users/harry/.gometalinter"
-
 " More familiar quickfix and location list shortcuts
 let g:qfenter_keymap = {}
 let g:qfenter_keymap.vopen = ['<C-v>']
@@ -98,13 +93,31 @@ let g:ale_fixers = {
 " Clashes with gofmt?
 "let g:ale_fix_on_save = 1
 
+let g:terraform_fmt_on_save=1
+
+augroup LspGo
+  au!
+  autocmd User lsp_setup call lsp#register_server({
+      \ 'name': 'go-lang',
+      \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
+      \ 'whitelist': ['go'],
+      \ })
+  autocmd FileType go setlocal omnifunc=lsp#complete
+  autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
+  autocmd FileType go nmap <buffer> <leader>n <plug>(lsp-next-error)
+  autocmd FileType go nmap <buffer> <leader>p <plug>(lsp-previous-error)
+  autocmd FileType go nmap <buffer> <leader>w <plug>(lsp-hover)
+augroup END
+
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '‼'}
+let g:lsp_signs_hint = {'text': 'ℹ'}
+
 let g:neoformat_only_msg_on_error = 1
 
-let g:terraform_fmt_on_save=1
-"let omnifunc='go#complete#GocodeComplete'
-
-command GoInfo :echo GOVIMHover()
-nnoremap <leader>w :GoInfo<cr>
+augroup Neoformat
+  autocmd BufWritePre *.go undojoin | Neoformat
+augroup END
 
 " }}}
 
