@@ -116,7 +116,7 @@ let g:lsp_signs_hint = {'text': 'ℹ'}
 let g:neoformat_only_msg_on_error = 1
 
 augroup Neoformat
-  autocmd BufWritePre *.go undojoin | Neoformat
+  autocmd BufWritePre *.go Neoformat
 augroup END
 
 " }}}
