@@ -211,6 +211,7 @@ if has("autocmd")
   autocmd BufNewFile,BufRead Jarfile set filetype=ruby
 
   autocmd BufNewFile,BufRead *.dockerfile set filetype=dockerfile
+  autocmd BufNewFile,BufRead Dockerfile.* set filetype=dockerfile
 endif
 
 " }}}

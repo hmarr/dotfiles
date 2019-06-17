@@ -104,8 +104,6 @@ augroup LspGo
       \ })
   autocmd FileType go setlocal omnifunc=lsp#complete
   autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
-  autocmd FileType go nmap <buffer> <leader>n <plug>(lsp-next-error)
-  autocmd FileType go nmap <buffer> <leader>p <plug>(lsp-previous-error)
   autocmd FileType go nmap <buffer> <leader>w <plug>(lsp-hover)
 augroup END
 
@@ -117,6 +115,7 @@ let g:neoformat_only_msg_on_error = 1
 
 augroup Neoformat
   autocmd BufWritePre *.go Neoformat
+  autocmd BufWritePre *.tf Neoformat
 augroup END
 
 " }}}
