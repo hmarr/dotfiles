@@ -21,6 +21,7 @@ alias docker-exec-latest="docker exec -ti \$(docker ps --latest --quiet) bash"
 
 alias fix-audio="sudo launchctl unload /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist && sudo launchctl load /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist"
 alias rubocop-changed="git ls-files -m | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop"
+alias rubocop-branch="git diff --name-only master | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop"
 alias kill-gocode="ps -ef | grep \"\$HOME/bin/gocode\" | grep -v grep | awk '{ print \$2 }' | xargs kill -9"
 alias flush-dns-cache="sudo killall -HUP mDNSResponder"
 
@@ -158,7 +159,7 @@ function {
 # Custom functions {{{
 
 code_dir="$HOME/src"
-j() {
+jp() {
   local candidates="$(find $code_dir -mindepth 3 -maxdepth 3 -type d |
     cut -f5- -d/ |
     grep -Ev "^ruby-" |
@@ -175,7 +176,8 @@ j() {
     fi
   fi
 }
-compctl -W "$code_dir" -/ j
+compctl -W "$code_dir" -/ jp
+alias j=jp
 
 vpn() {
   local vpn="${1:-💼 GoCardless}"
@@ -240,14 +242,21 @@ gh-open() {
 }
 
 gh-clone() {
-  if [[ ! "$1" =~ "^[^/]+/[^/]+$" ]]; then
+  local repo="${1/https:\/\/github.com\//}"
+  if [[ ! "$repo" =~ "^[^/]+/[^/]+$" ]]; then
     echo "invalid repo - format must be ACCOUNT/NAME"
     return
   fi
 
-  dest="${code_dir}/github.com/$1"
+  local dest="${code_dir}/github.com/$repo"
+  if [ -e "$dest" ]; then
+    echo "$dest: already exists"
+    cd "$dest"
+    return
+  fi
+
   mkdir -p "$dest"
-  git clone "git@github.com:$1" "$dest"
+  git clone "git@github.com:$repo" "$dest"
   cd "$dest"
 }
 
@@ -262,7 +271,7 @@ docker-debug() {
     --net="container:$1" \
     --cap-add sys_admin \
     --cap-add sys_ptrace \
-    debug
+    hmarr/debug-tools
 }
 
 ssh_bin=$(which ssh)
