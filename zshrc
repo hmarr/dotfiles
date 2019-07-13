@@ -276,6 +276,10 @@ docker-debug() {
     hmarr/debug-tools
 }
 
+docker-debug-latest() {
+  docker-debug "$(docker ps --latest --quiet)"
+}
+
 ssh_bin=$(which ssh)
 ssh() {
   if ! ssh-add -l | grep "$HOME/.ssh/id_rsa" > /dev/null; then
