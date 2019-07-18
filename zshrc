@@ -172,7 +172,7 @@ jp() {
       cd "$code_dir/$1"
     else
       local dir="$(echo $candidates | fzf --select-1 --query "$1")"
-      [[ $? == 0 ]] && cd "$code_dir/$dir"
+      [[ $? == 0 && -n "$dir" ]] && cd "$code_dir/$dir"
     fi
   fi
 }
