@@ -233,9 +233,15 @@ gh-pr() {
 }
 
 gh-open() {
+  local file="$1"
   if git rev-parse --git-dir > /dev/null 2>&1; then
     repo=$(git remote get-url origin|sed "s/:/\\//; s/\\.git//; s/git@/https:\\/\\//")
-    open "${repo}"
+    if [ -z "$file" ]; then
+      open "${repo}"
+    else
+      local branch=$(git rev-parse --abbrev-ref HEAD)
+      open "${repo}/blob/${branch}/${file}"
+    fi
   else
     echo "not in a git repo"
   fi
