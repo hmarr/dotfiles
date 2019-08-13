@@ -18,6 +18,7 @@ Plug 'yssl/QFEnter'
 " Tools
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'janko-m/vim-test'
 Plug 'tpope/vim-projectionist'
 
