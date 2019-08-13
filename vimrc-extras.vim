@@ -7,33 +7,31 @@
 
 call plug#begin('~/.vim/plugged')
 
-" Core
-Plug 'scrooloose/nerdcommenter'
-Plug 'tpope/vim-surround'
+" Tools
+Plug 'janko-m/vim-test'
 Plug 'junegunn/fzf.vim'
+Plug 'rking/ag.vim'
 Plug 'sbdchd/neoformat'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-surround'
 Plug 'w0rp/ale'
 Plug 'yssl/QFEnter'
 
-" Tools
-Plug 'rking/ag.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'janko-m/vim-test'
-Plug 'tpope/vim-projectionist'
-
 " Languages
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-rake'
+Plug 'elixir-lang/vim-elixir'
+Plug 'hashivim/vim-terraform'
 Plug 'hmarr/vim-gemfile'
-Plug 'rust-lang/rust.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'mxw/vim-jsx'
+Plug 'pangloss/vim-javascript'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
-Plug 'elixir-lang/vim-elixir'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim'
-Plug 'hashivim/vim-terraform'
+Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rake'
 
 " Other
 Plug 'jdkanani/vim-material-theme'
