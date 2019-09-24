@@ -71,7 +71,6 @@ let g:ftplugin_sql_omni_key = '<C-j>'
 set rtp+=/usr/local/opt/fzf
 
 " Use ag to find files for fzf, so .gitignore and friends are honoured
-"let $FZF_DEFAULT_COMMAND= 'ag -g ""'
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --glob="!.git/" --ignore-file="$HOME/.gitignore_global"'
 
 " Make vim-jsx work for .js files
