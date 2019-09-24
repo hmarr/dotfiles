@@ -1,5 +1,5 @@
 " Author: Harry Marr <harry@hmarr.com>
-" Source: https://github.com/hmarr/dotfiles/tree/master/vimrc-vanilla.vim
+" Source: https://github.com/hmarr/dotfiles/tree/master/vimrc-extras.vim
 
 " Plugin-related settings
 "
