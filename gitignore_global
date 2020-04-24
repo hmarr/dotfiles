@@ -9,4 +9,5 @@ _scratch/
 .projections.json
 .dockerignore
 .byebug_history
+.env.local
 vendor/
