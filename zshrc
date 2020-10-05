@@ -179,29 +179,6 @@ jp() {
 compctl -W "$code_dir" -/ jp
 alias j=jp
 
-vpn() {
-  local vpn="${1:-💼 GoCardless}"
-  local vpn_status=$(scutil --nc status $vpn | head -n1)
-
-  if [[ "$vpn_status" == "Disconnected" ]]; then
-    echo Connecting to VPN...
-/usr/bin/env osascript <<-EOF
-tell application "System Events"
-  tell current location of network preferences
-    set VPN to service "$vpn"
-    if exists VPN then connect VPN
-    repeat while (current configuration of VPN is not connected)
-      delay 1
-    end repeat
-  end tell
-end tell
-EOF
-    vpn_status=$(scutil --nc status $vpn | head -n1)
-  fi
-
-  echo "$vpn_status"
-}
-
 batt() {
   time_remaining=$(pmset -g batt | egrep "([0-9]+:[0-9]+)" -o)
   pct_remaining=$(pmset -g batt | egrep "([0-9]+\%)" -o)
