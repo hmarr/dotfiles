@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if [ -z "$OVERWRITE_DOTFILES" ]; then
+  if [ "$CODESPACES" = "true" ]; then
+    OVERWRITE_DOTFILES=true
+  fi
+fi
+
 red() {
   echo " $(tput setaf 1)$*$(tput setaf 9)"
 }
@@ -10,6 +16,23 @@ yellow() {
 
 green() {
   echo " $(tput setaf 2)$*$(tput setaf 9)"
+}
+
+move_to_backup_dir() {
+  local file_path="$1"
+  local current_path="$HOME/$file_path"
+  local backup_path="$HOME/.dotfiles-backup/$file_path"
+  local backup_dir="$(dirname $backup_path)"
+
+  if [ ! -d "$backup_dir" ]; then
+    mkdir -p "$backup_dir"
+    if [ $? -ne 0 ]; then
+      return 1
+    fi
+  fi
+
+  mv "$current_path" "$backup_path"
+  return $?
 }
 
 link_dotfile() {
@@ -23,8 +46,17 @@ link_dotfile() {
   fi
 
   if [ -e "$full_dest" ]; then
-    red "✘ $dest already exists"
-    return
+    if [ "$OVERWRITE_DOTFILES" = "true" ]; then
+      yellow "ℹ $dest already exists, moving to backup directory"
+      move_to_backup_dir "$dest"
+      if [ $? -ne 0 ]; then
+        red "✘ couldn't create backup for $dest"
+        return
+      fi
+    else
+      red "✘ $dest already exists"
+      return
+    fi
   fi
 
   local link_dir="$(dirname $full_dest)"
@@ -53,4 +85,3 @@ link_dotfile "gitconfig" ".gitconfig"
 link_dotfile "gitignore_global" ".gitignore_global"
 link_dotfile "bundle" ".bundle"
 link_dotfile "projections.json" ".projections.json"
-
