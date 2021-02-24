@@ -8,7 +8,7 @@
 	rp = pull --rebase
 	tidy-branches = !git branch --merged master | grep -v -e '^* ' -e '^. master$' -e '^. dev$' | xargs git branch -d
 [core]
-	excludesfile = /Users/harry/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [url "https://github.com/"]
 	insteadOf = "github:"
 [url "git@github.com:"]
