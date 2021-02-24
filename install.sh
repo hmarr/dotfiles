@@ -13,18 +13,34 @@ green() {
 }
 
 link_dotfile() {
-  source="$1"
-  dest="$2"
-  full_dest="$HOME/$dest"
-  if [ -e "$full_dest" ] || [ -L "$full_dest" ]; then
-    if [ -L "$full_dest" ] && [ "$full_dest" -ef "$source" ]; then
-      yellow "✔ $dest is already linked"
-    else
-      red "✘ $dest already exists"
+  local source="$1"
+  local dest="$2"
+  local full_dest="$HOME/$dest"
+
+  if [ -L "$full_dest" ] && [ "$full_dest" -ef "$source" ]; then
+    yellow "✔ $dest is already linked"
+    return
+  fi
+
+  if [ -e "$full_dest" ]; then
+    red "✘ $dest already exists"
+    return
+  fi
+
+  local link_dir="$(dirname $full_dest)"
+  if [ ! -d "$link_dir" ]; then
+    mkdir -p "$link_dir"
+    if [ $? -ne 0 ]; then
+      red "✘ couldn't create directory $link_dir"
+      return
     fi
-  else
-    ln -s "$(pwd)/$source" "$full_dest"
+  fi
+
+  ln -s "$(pwd)/$source" "$full_dest"
+  if [ $? -eq 0 ]; then
     green "✔ $dest has been linked"
+  else
+    red "✘ $dest link couldn't be created"
   fi
 }
 
