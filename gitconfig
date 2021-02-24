@@ -5,6 +5,7 @@
 	co = checkout
 	ci = commit
 	st = status
+	rp = pull --rebase
 	tidy-branches = !git branch --merged master | grep -v -e '^* ' -e '^. master$' -e '^. dev$' | xargs git branch -d
 [core]
 	excludesfile = /Users/harry/.gitignore_global
@@ -22,6 +23,6 @@
 [commit]
 	verbose = true
 [pull]
-	rebase = true
+	ff = only
 [init]
 	defaultBranch = main
