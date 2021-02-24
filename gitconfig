@@ -9,13 +9,6 @@
 	tidy-branches = !git branch --merged master | grep -v -e '^* ' -e '^. master$' -e '^. dev$' | xargs git branch -d
 [core]
 	excludesfile = ~/.gitignore_global
-[url "https://github.com/"]
-	insteadOf = "github:"
-[url "git@github.com:"]
-	insteadOf = "gh:"
-	insteadOf = https://github.com/
-[url "git@gitlab.com:"]
-	insteadOf = https://gitlab.com/
 [push]
 	default = simple
 [branch]
@@ -26,3 +19,6 @@
 	ff = only
 [init]
 	defaultBranch = main
+[include]
+  # This should be symlinked to _either_ of gitconfig-github-{ssh,http}-auth
+  path = ~/.gitconfig-github-auth

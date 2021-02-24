@@ -82,6 +82,11 @@ link_dotfile "vimrc" ".vimrc"
 link_dotfile "vimrc-vanilla.vim" ".vim/vimrc-vanilla.vim"
 link_dotfile "vimrc-extras.vim" ".vim/vimrc-extras.vim"
 link_dotfile "gitconfig" ".gitconfig"
+if [ "$CODESPACES" = "true" ]; then
+  link_dotfile "gitconfig-github-http-auth" ".gitconfig-github-auth"
+else
+  link_dotfile "gitconfig-github-ssh-auth" ".gitconfig-github-auth"
+fi
 link_dotfile "gitignore_global" ".gitignore_global"
 link_dotfile "bundle" ".bundle"
 link_dotfile "projections.json" ".projections.json"
