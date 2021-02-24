@@ -87,10 +87,12 @@ zstyle ':completion:*:hosts' hosts $_ssh_config
 compctl -g '~/.rubies/*(:t)' chruby
 
 # fzf fuzzy completion
-source "$HOME/.fzf.zsh"
-export FZF_COMPLETION_TRIGGER=''
-bindkey '^T' fzf-completion
-bindkey '^I' $fzf_default_completion
+if [ -f "$HOME/.fzf.zsh" ]; then
+  source "$HOME/.fzf.zsh"
+  export FZF_COMPLETION_TRIGGER=''
+  bindkey '^T' fzf-completion
+  bindkey '^I' $fzf_default_completion
+fi
 
 # }}}
 
@@ -276,11 +278,15 @@ ssh() {
 # Languages {{{
 
 # asdf to manage lanugage installations
-source $HOME/.asdf/asdf.sh
-source $HOME/.asdf/completions/asdf.bash
+if [ -f $HOME/.asdf/asdf.sh ]; then
+  source $HOME/.asdf/asdf.sh
+  source $HOME/.asdf/completions/asdf.bash
+fi
 
 # Direnv, which helps switch between projects
-eval "$(direnv hook zsh)"
+if command -v direnv &> /dev/null; then
+  eval "$(direnv hook zsh)"
+fi
 
 # }}}
 
