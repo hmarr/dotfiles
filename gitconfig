@@ -20,5 +20,7 @@
 [init]
 	defaultBranch = main
 [include]
-  # This should be symlinked to _either_ of gitconfig-github-{ssh,http}-auth
-  path = ~/.gitconfig-github-auth
+	# This should be symlinked to _either_ of gitconfig-github-{ssh,http}-auth
+	path = ~/.gitconfig-github-auth
+[include]
+	path = ~/.gitconfig.local
