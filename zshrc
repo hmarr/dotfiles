@@ -229,7 +229,7 @@ gh-open() {
 gh-clone() {
   local repo="${1/https:\/\/github.com\//}"
   repo="${repo/git@github.com:/}"
-  repo="${repo/.git/}"
+  repo="${repo%.git}"
   if [[ ! "$repo" =~ "^[^/]+/[^/]+$" ]]; then
     echo "invalid repo - format must be ACCOUNT/NAME"
     return
