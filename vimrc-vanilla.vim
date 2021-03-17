@@ -5,6 +5,8 @@
 
 " Basic Settings ================================================== {{{
 
+" This is usually set by the system-wide vimrc, but won't be if using vim -u
+set nocompatible
 " Enable syntax highlighting
 syntax on
 " Use indent level from previous line
@@ -77,7 +79,11 @@ endif
 
 " Make it pretty
 set termguicolors
-set background=dark
+if $TERMINAL_THEME == "light"
+  set background=light
+else
+  set background=dark
+endif
 
 " Disable slow regex engine for faster syntax highlighting
 if v:version >= 704

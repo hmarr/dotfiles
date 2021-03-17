@@ -4,8 +4,6 @@
 source ~/.vim/vimrc-vanilla.vim
 if $CODESPACES != 'true'
   source ~/.vim/vimrc-extras.vim
-else
-  set background=light
 endif
 
 set backup

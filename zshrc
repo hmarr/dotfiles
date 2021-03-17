@@ -151,6 +151,9 @@ function prompt_language_env {
 function {
   local prompt_character="%(?,%{$fg[green]%},%{$fg[red]%})%(!,#,$)%{$reset_color%}"
   local cwd="%F{250}%c%f"
+  if [ "$TERMINAL_THEME" = "light" ]; then
+    cwd="%F{244}%c%f"
+  fi
 
   PROMPT="\$(prompt_language_env)${cwd} ${prompt_character} "
   RPROMPT='${vcs_info_msg_0_}'

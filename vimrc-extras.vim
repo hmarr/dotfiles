@@ -44,7 +44,10 @@ call plug#end()
 
 " Don't hide the ~ characters at the end of the buffer
 let g:material_hide_endofbuffer = 0
-colorscheme material-theme
+
+if $TERMINAL_THEME != "light"
+  colorscheme material-theme
+endif
 
 " Fuzzy file searching
 nnoremap <c-p> :FZF<CR>
