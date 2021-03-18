@@ -276,6 +276,41 @@ ssh() {
   $ssh_bin "$@"
 }
 
+npm-upgrade-deps() {
+  if [ ! -f package.json ]; then
+    echo "no package.json found"
+    return 1
+  fi
+
+  if cat package.json | jq -e .dependencies > /dev/null; then
+    echo "Upgrading dependencies:"
+    cat package.json | jq '.dependencies | keys | .[] | (. + "@latest")'
+
+    local proceed
+
+    read -q "proceed?Go ahead? [Y/n]"
+    echo
+    if [[ "$proceed" == "y" ]] ; then
+      cat package.json | jq '.dependencies | keys | .[] | (. + "@latest")' | xargs npm install
+    fi
+  else
+    echo "No dependencies found"
+  fi
+
+  if cat package.json | jq -e .devDependencies > /dev/null; then
+    echo "Upgrading devDependencies:"
+    cat package.json | jq '.devDependencies | keys | .[] | (. + "@latest")'
+
+    read -q "proceed?Go ahead? [Y/n]"
+    echo
+    if [[ "$proceed" == "y" ]] ; then
+      cat package.json | jq '.devDependencies | keys | .[] | (. + "@latest")' | xargs npm install
+    fi
+  else
+    echo "No devDependencies found"
+  fi
+}
+
 # }}}
 
 # Languages {{{
