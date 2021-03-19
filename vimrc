@@ -4,7 +4,9 @@
 source ~/.vim/vimrc-vanilla.vim
 if $CODESPACES != 'true'
   source ~/.vim/vimrc-extras.vim
+  set backup
+  set backupdir=~/.vim/backup
+else
+  set nobackup
+  set nowritebackup
 endif
-
-set backup
-set backupdir=~/.vim/backup
