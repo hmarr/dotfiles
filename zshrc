@@ -148,7 +148,7 @@ function prompt_language_env {
   echo "$language_env"
 }
 
-function {
+function set_prompt {
   local prompt_character="%(?,%{$fg[green]%},%{$fg[red]%})%(!,#,$)%{$reset_color%}"
   local cwd="%F{250}%c%f"
   if [ "$TERMINAL_THEME" = "light" ]; then
@@ -158,6 +158,7 @@ function {
   PROMPT="\$(prompt_language_env)${cwd} ${prompt_character} "
   RPROMPT='${vcs_info_msg_0_}'
 }
+set_prompt
 
 # }}}
 
@@ -165,18 +166,18 @@ function {
 
 code_dir="$HOME/src"
 jp() {
-  local candidates="$(find $code_dir -mindepth 3 -maxdepth 3 -type d |
+  local candidates="$(find "$code_dir" -mindepth 3 -maxdepth 3 -type d |
     cut -f5- -d/ |
     grep -Ev "^ruby-" |
     grep -v "/\.")"
   if [ -z "$1" ]; then
-    local dir="$(echo $candidates | fzf)"
+    local dir="$(echo "$candidates" | fzf)"
     [[ $? == 0 && -n "$dir" ]] && cd "$code_dir/$dir" || true
   else
     if [ -d "$code_dir/$1" ]; then
       cd "$code_dir/$1"
     else
-      local dir="$(echo $candidates | fzf --select-1 --query "$1")"
+      local dir="$(echo "$candidates" | fzf --select-1 --query "$1")"
       [[ $? == 0 && -n "$dir" ]] && cd "$code_dir/$dir"
     fi
   fi
@@ -185,8 +186,8 @@ compctl -W "$code_dir" -/ jp
 alias j=jp
 
 batt() {
-  time_remaining=$(pmset -g batt | egrep "([0-9]+:[0-9]+)" -o)
-  pct_remaining=$(pmset -g batt | egrep "([0-9]+\%)" -o)
+  time_remaining=$(pmset -g batt | grep -Eo "([0-9]+:[0-9]+)")
+  pct_remaining=$(pmset -g batt | grep -Eo "([0-9]+\%)")
   echo "$time_remaining remaining ($pct_remaining)"
 }
 
@@ -201,13 +202,13 @@ notify() {
     -e 'on run argv' \
     -e '  display notification item 1 of argv with title "Terminal"' \
     -e 'end' \
-    -- $@
+    -- "$*"
 }
 
 gh-pr() {
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    repo=$(git remote get-url origin|sed "s/:/\\//; s/\\.git//; s/git@/https:\\/\\//")
-    branch=$(git rev-parse --abbrev-ref HEAD)
+    local repo=$(git remote get-url origin|sed "s/:/\\//; s/\\.git//; s/git@/https:\\/\\//")
+    local branch=$(git rev-parse --abbrev-ref HEAD)
     open "${repo}/compare/${branch}?expand=1"
   else
     echo "not in a git repo"
@@ -233,7 +234,7 @@ gh-clone() {
   local repo="${1/https:\/\/github.com\//}"
   repo="${repo/git@github.com:/}"
   repo="${repo%.git}"
-  if [[ ! "$repo" =~ "^[^/]+/[^/]+$" ]]; then
+  if [[ ! "$repo" =~ ^[^/]+/[^/]+$ ]]; then
     echo "invalid repo - format must be ACCOUNT/NAME"
     return
   fi
@@ -282,29 +283,29 @@ npm-upgrade-deps() {
     return 1
   fi
 
-  if cat package.json | jq -e .dependencies > /dev/null; then
+  if jq -e .dependencies package.json > /dev/null; then
     echo "Upgrading dependencies:"
-    cat package.json | jq '.dependencies | keys | .[] | (. + "@latest")'
+    jq '.dependencies | keys | .[] | (. + "@latest")' package.json
 
     local proceed
 
     read -q "proceed?Go ahead? [Y/n]"
     echo
     if [[ "$proceed" == "y" ]] ; then
-      cat package.json | jq '.dependencies | keys | .[] | (. + "@latest")' | xargs npm install
+      jq '.dependencies | keys | .[] | (. + "@latest")' package.json | xargs npm install
     fi
   else
     echo "No dependencies found"
   fi
 
-  if cat package.json | jq -e .devDependencies > /dev/null; then
+  if jq -e .devDependencies package.json > /dev/null; then
     echo "Upgrading devDependencies:"
-    cat package.json | jq '.devDependencies | keys | .[] | (. + "@latest")'
+    jq '.devDependencies | keys | .[] | (. + "@latest")' package.json
 
     read -q "proceed?Go ahead? [Y/n]"
     echo
     if [[ "$proceed" == "y" ]] ; then
-      cat package.json | jq '.devDependencies | keys | .[] | (. + "@latest")' | xargs npm install
+      jq '.devDependencies | keys | .[] | (. + "@latest")' package.json | xargs npm install
     fi
   else
     echo "No devDependencies found"
@@ -316,9 +317,9 @@ npm-upgrade-deps() {
 # Languages {{{
 
 # asdf to manage lanugage installations
-if [ -f $HOME/.asdf/asdf.sh ]; then
-  source $HOME/.asdf/asdf.sh
-  source $HOME/.asdf/completions/asdf.bash
+if [ -f ~/.asdf/asdf.sh ]; then
+  source ~/.asdf/asdf.sh
+  source ~/.asdf/completions/asdf.bash
 fi
 
 # Direnv, which helps switch between projects
@@ -328,5 +329,5 @@ fi
 
 # }}}
 
-[ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
-[ -f $HOME/.zshrc_local/zshrc ] && source $HOME/.zshrc_local/zshrc || true
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+[ -f ~/.zshrc_local/zshrc ] && source ~/.zshrc_local/zshrc || true

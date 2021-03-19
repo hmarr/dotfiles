@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -z "$OVERWRITE_DOTFILES" ]; then
   if [ "$CODESPACES" = "true" ]; then
@@ -22,11 +22,10 @@ move_to_backup_dir() {
   local file_path="$1"
   local current_path="$HOME/$file_path"
   local backup_path="$HOME/.dotfiles-backup/$file_path"
-  local backup_dir="$(dirname $backup_path)"
+  local backup_dir="$(dirname "$backup_path")"
 
   if [ ! -d "$backup_dir" ]; then
-    mkdir -p "$backup_dir"
-    if [ $? -ne 0 ]; then
+    if ! mkdir -p "$backup_dir"; then
       return 1
     fi
   fi
@@ -48,8 +47,7 @@ link_dotfile() {
   if [ -e "$full_dest" ]; then
     if [ "$OVERWRITE_DOTFILES" = "true" ]; then
       yellow "ℹ $dest already exists, moving to backup directory"
-      move_to_backup_dir "$dest"
-      if [ $? -ne 0 ]; then
+      if ! move_to_backup_dir "$dest"; then
         red "✘ couldn't create backup for $dest"
         return
       fi
@@ -59,17 +57,15 @@ link_dotfile() {
     fi
   fi
 
-  local link_dir="$(dirname $full_dest)"
+  local link_dir="$(dirname "$full_dest")"
   if [ ! -d "$link_dir" ]; then
-    mkdir -p "$link_dir"
-    if [ $? -ne 0 ]; then
+    if ! mkdir -p "$link_dir"; then
       red "✘ couldn't create directory $link_dir"
       return
     fi
   fi
 
-  ln -s "$(pwd)/$source" "$full_dest"
-  if [ $? -eq 0 ]; then
+  if ln -s "$(pwd)/$source" "$full_dest"; then
     green "✔ $dest has been linked"
   else
     red "✘ $dest link couldn't be created"
