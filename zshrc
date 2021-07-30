@@ -320,6 +320,20 @@ npm-upgrade-deps() {
   fi
 }
 
+backup() {
+  local backup_dir="$HOME/backups"
+  local src_path=$(realpath "$1")
+  local timestamp=$(date "+%Y-%m-%d--%H-%M-%S")
+  local dst_path="$backup_dir/$timestamp$src_path"
+  local dst_dir=$(dirname "$dst_path")
+
+  echo "Creating backup"
+  echo "  source      = $src_path"
+  echo "  destination = $dst_path"
+  [ ! -d "$dst_dir" ] && mkdir -p "$dst_dir"
+  cp -r "$src_path" "$dst_path"
+}
+
 # }}}
 
 # Languages {{{
