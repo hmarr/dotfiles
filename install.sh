@@ -86,3 +86,4 @@ fi
 link_dotfile "gitignore_global" ".gitignore_global"
 link_dotfile "bundle" ".bundle"
 link_dotfile "projections.json" ".projections.json"
+link_dotfile "alacritty.yml" ".config/alacritty/alacritty.yml"
