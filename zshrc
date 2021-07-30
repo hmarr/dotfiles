@@ -257,9 +257,17 @@ docker-debug() {
     return 1
   fi
 
+  echo "Starting debug sidecar for container $1"
+
+  [ ! -d "/tmp/debug-$1" ] && mkdir "/tmp/debug-$1"
+  echo "Mounting /scratch to /tmp/debug-$1"
+
   docker run --rm -ti \
+    --name="debug-${1:0:6}" \
+    --workdir="/scratch" \
+    --volume="/tmp/debug-$1:/scratch" \
     --pid="container:$1" \
-    --net="container:$1" \
+    --network="container:$1" \
     --cap-add sys_admin \
     --cap-add sys_ptrace \
     hmarr/debug-tools
