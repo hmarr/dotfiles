@@ -10,7 +10,7 @@ alias ....="cd ../../.."
 alias g="git"
 alias gst="git status"
 alias vi="vim"
-alias vip="vim -c :FZF"
+alias vip="vim -c 'autocmd VimEnter * nested FZF'"
 alias bx="bundle exec"
 
 alias -g router_ip="\$(route -n get default -ifscope en0 | awk '/gateway/ { print \$2 }')"
