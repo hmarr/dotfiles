@@ -63,4 +63,4 @@ key_bindings:
   - { key: Left,     mods: Alt,     chars: "\x1bb"                       }
   - { key: Right,    mods: Alt,     chars: "\x1bf"                       }
   - { key: Return,   mods: Command, action: ToggleSimpleFullscreen       }
-
+  - { key: N,        mods: Command, command: { program: "open", args: ["-na", "Alacritty.app"] } }
