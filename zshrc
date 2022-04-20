@@ -31,6 +31,7 @@ alias tf="terraform"
 alias vimrc="vim -p $HOME/.vimrc $HOME/.vim/vimrc-vanilla.vim $HOME/.vim/vimrc-extras.vim"
 
 alias ecr-login='eval "$(aws ecr get-login --no-include-email)"'
+alias fast='networkQuality -v'
 
 # }}}
 
@@ -71,6 +72,23 @@ bindkey '^[[3~' delete-char
 
 # History expansion on space
 bindkey ' ' magic-space
+
+# }}}
+
+# Languages {{{
+
+# asdf to manage lanugage installations
+if [ -f ~/.asdf/asdf.sh ]; then
+  source ~/.asdf/asdf.sh
+
+  # append completions to fpath, must be before `compinit` is run
+  fpath=(${ASDF_DIR}/completions $fpath)
+fi
+
+# Direnv, which helps switch between projects
+if command -v direnv &> /dev/null; then
+  eval "$(direnv hook zsh)"
+fi
 
 # }}}
 
@@ -129,16 +147,16 @@ WORDCHARS=${WORDCHARS//[\/.-]}
 
 setopt PROMPT_SUBST
 
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:*' stagedstr '+'
-zstyle ':vcs_info:*' unstagedstr '*'
-zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f%{$reset_color%}"
-precmd() {
-  type notify-after-command > /dev/null && _post_cmd_notify
-  vcs_info
-}
+#autoload -Uz vcs_info
+#zstyle ':vcs_info:*' enable git
+#zstyle ':vcs_info:*' stagedstr '+'
+#zstyle ':vcs_info:*' unstagedstr '*'
+#zstyle ':vcs_info:*' check-for-changes true
+#zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f%{$reset_color%}"
+#precmd() {
+#  type notify-after-command > /dev/null && _post_cmd_notify
+#  vcs_info
+#}
 
 function prompt_language_env {
   local language_env=""
@@ -156,7 +174,7 @@ function set_prompt {
   fi
 
   PROMPT="\$(prompt_language_env)${cwd} ${prompt_character} "
-  RPROMPT='${vcs_info_msg_0_}'
+  #RPROMPT='${vcs_info_msg_0_}'
 }
 set_prompt
 
@@ -279,8 +297,8 @@ docker-debug-latest() {
 
 ssh_bin=$(which ssh)
 ssh() {
-  if ! ssh-add -l | grep "$HOME/.ssh/id_rsa" > /dev/null; then
-    ssh-add "$HOME/.ssh/id_rsa"
+  if ! ssh-add -l | grep "hmarr@work-macbook-pro" > /dev/null; then
+    ssh-add "$HOME/.ssh/id_ed25519"
   fi
   $ssh_bin "$@"
 }
@@ -321,7 +339,22 @@ npm-upgrade-deps() {
 }
 
 backup() {
+  if [ -z "$1" ]; then
+    echo "usage: backup FILE"
+    return
+  fi
+
   local backup_dir="$HOME/backups"
+  if [ ! -d "$backup_dir" ]; then
+    echo "backup directory $backup_dir does not exist"
+    return
+  fi
+
+  if [ ! -e "$1" ]; then
+    echo "no file or directory found at path '$1'"
+    return
+  fi
+
   local src_path=$(realpath "$1")
   local timestamp=$(date "+%Y-%m-%d--%H-%M-%S")
   local dst_path="$backup_dir/$timestamp$src_path"
@@ -333,21 +366,6 @@ backup() {
   [ ! -d "$dst_dir" ] && mkdir -p "$dst_dir"
   cp -r "$src_path" "$dst_path"
 }
-
-# }}}
-
-# Languages {{{
-
-# asdf to manage lanugage installations
-if [ -f ~/.asdf/asdf.sh ]; then
-  source ~/.asdf/asdf.sh
-  source ~/.asdf/completions/asdf.bash
-fi
-
-# Direnv, which helps switch between projects
-if command -v direnv &> /dev/null; then
-  eval "$(direnv hook zsh)"
-fi
 
 # }}}
 
