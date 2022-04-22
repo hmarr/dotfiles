@@ -29,6 +29,9 @@ defaults write com.apple.dock show-recents -bool false
 # Make the regular date and time menu bar item small, as I use Dato
 defaults write com.apple.menuextra.clock IsAnalog -bool true
 
+# Save screenshots in the Screncaps folder
+defaults write com.apple.screencapture location ~/Desktop/Screencaps
+
 # See the changes
 killall Dock
 killall Finder
