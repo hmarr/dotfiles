@@ -147,16 +147,16 @@ WORDCHARS=${WORDCHARS//[\/.-]}
 
 setopt PROMPT_SUBST
 
-#autoload -Uz vcs_info
-#zstyle ':vcs_info:*' enable git
-#zstyle ':vcs_info:*' stagedstr '+'
-#zstyle ':vcs_info:*' unstagedstr '*'
-#zstyle ':vcs_info:*' check-for-changes true
-#zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f%{$reset_color%}"
-#precmd() {
-#  type notify-after-command > /dev/null && _post_cmd_notify
-#  vcs_info
-#}
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' stagedstr '+'
+zstyle ':vcs_info:*' unstagedstr '*'
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f%{$reset_color%}"
+precmd() {
+  type notify-after-command > /dev/null && _post_cmd_notify
+  vcs_info
+}
 
 function prompt_language_env {
   local language_env=""
@@ -174,7 +174,7 @@ function set_prompt {
   fi
 
   PROMPT="\$(prompt_language_env)${cwd} ${prompt_character} "
-  #RPROMPT='${vcs_info_msg_0_}'
+  RPROMPT='${vcs_info_msg_0_}'
 }
 set_prompt
 
