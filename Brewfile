@@ -7,6 +7,7 @@ brew "git-delta"            # Better git diff output
 brew "glow"                 # Command line markdown renderer
 brew "gnupg"                # GPG 2
 brew "jq"                   # JSON swiss army knife
+brew "kopia"                # Backups
 brew "mas"                  # Manage Mac App Store apps from the command line
 brew "pinentry-mac"         # Enables GPG <> Keychain integration
 brew "pngcrush"             # Compress png images
@@ -30,6 +31,7 @@ brew "hmarr/tap/codeowners" # Check code ownership
 cask "alacritty"            # Fast, minimal terminal
 cask "docker"               # Containers
 cask "rectangle"            # Window manager
+cask "spotify"              # Ear candy
 cask "unshaky"              # Prevent duplicate keypresses
 cask "vitals"               # Process resource monitor
 cask "visual-studio-code"   # Editor / IDE
