@@ -32,6 +32,7 @@ cask "docker"               # Containers
 cask "rectangle"            # Window manager
 cask "unshaky"              # Prevent duplicate keypresses
 cask "vitals"               # Process resource monitor
+cask "visual-studio-code"   # Editor / IDE
 
 # App Store apps
 mas "Amphetamine", id: 937984704
