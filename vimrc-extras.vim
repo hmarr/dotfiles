@@ -8,24 +8,21 @@
 call plug#begin('~/.vim/plugged')
 
 " Tools
-Plug 'janko-m/vim-test'
+Plug 'vim-test/vim-test'
 Plug 'junegunn/fzf.vim'
-Plug 'rking/ag.vim'
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'yssl/QFEnter'
 
 " Languages
-Plug 'elixir-lang/vim-elixir'
 Plug 'hashivim/vim-terraform'
 Plug 'hmarr/vim-gemfile'
 Plug 'leafgarland/typescript-vim'
-Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -51,15 +48,6 @@ endif
 
 " Fuzzy file searching
 nnoremap <c-p> :FZF<CR>
-
-if executable('ag')
-  " If ag is available, use it for ctrl p, as it's super quick
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:ctrlp_use_caching = 0
-endif
-
-" ag.vim mapping message is too long
-let g:ag_mapping_message = 0
 
 " Run tests in neovim terminal
 let test#strategy = 'vimterminal'

@@ -1,5 +1,10 @@
 # Reference: https://github.com/alacritty/alacritty/blob/master/alacritty.yml
 
+env:
+  # vim colors don't seem to work without this
+  TERM: xterm-256color
+
+
 window:
   padding:
     x: 6
