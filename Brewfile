@@ -30,6 +30,7 @@ brew "hmarr/tap/codeowners" # Check code ownership
 # Casks
 cask "alacritty"            # Fast, minimal terminal
 cask "docker"               # Containers
+cask "raycast"              # Spotlight++
 cask "rectangle"            # Window manager
 cask "spotify"              # Ear candy
 cask "unshaky"              # Prevent duplicate keypresses
@@ -43,6 +44,7 @@ mas "Dato", id: 1470584107
 mas "Gifski", id: 1351639930
 mas "Hand Mirror", id: 1502839586
 mas "Hidden Bar", id: 1452453066
+mas "Tailscale", id: 1475387142
 mas "Tweetbot", id: 1384080005
 mas "WhatsApp", id: 1147396723
 
