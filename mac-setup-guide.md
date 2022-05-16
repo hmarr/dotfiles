@@ -14,8 +14,8 @@
    ```
 1. Link the dotfiles, and apply macOS settings.
    ```
-   ./install.sh
-   ./macos-settings.sh
+   bin/install.sh
+   bin/macos-settings.sh
    ```
 1. Install Homebrew per the [instructions](https://brew.sh/) on the website.
 1. Install command line tools, apps, and fonts with Homebrew.
