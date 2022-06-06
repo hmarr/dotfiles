@@ -36,6 +36,7 @@ cask "spotify"              # Ear candy
 cask "unshaky"              # Prevent duplicate keypresses
 cask "vitals"               # Process resource monitor
 cask "visual-studio-code"   # Editor / IDE
+cask "vlc"                  # Video player
 
 # App Store apps
 mas "Amphetamine", id: 937984704
