@@ -367,6 +367,26 @@ backup() {
   cp -r "$src_path" "$dst_path"
 }
 
+csvq() {
+  csvpath="$1"
+  if [ -z "$csvpath" ]; then
+    echo "usage: csvq CSV-FILE QUERY"
+    return 1
+  fi
+  if [ ! -e "$csvpath" ]; then
+    echo "no csv file found at path '$csvpath'"
+    return 1
+  fi
+
+  query="$2"
+  if [ -z "$query" ]; then
+    echo "usage: csvq CSV-FILE QUERY"
+    return 1
+  fi
+
+  sqlite3 -csv -cmd ".import ""$1"" data" ':memory:' "$query"
+}
+
 # }}}
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
