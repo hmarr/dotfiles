@@ -15,6 +15,7 @@
 	autosetuprebase = always
 [commit]
 	verbose = true
+	gpgsign = true
 [pull]
 	ff = only
 [init]
