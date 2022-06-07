@@ -38,13 +38,13 @@ alias fast='networkQuality -v'
 # History {{{
 
 # Save history
-HISTSIZE=10000
+HISTSIZE=100000
 SAVEHIST=$HISTSIZE
 HISTFILE=~/.zsh_history
 
 # Better history
 setopt EXTENDED_HISTORY
-setopt INC_APPEND_HISTORY
+setopt INC_APPEND_HISTORY_TIME
 setopt HIST_VERIFY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
