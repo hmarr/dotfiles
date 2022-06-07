@@ -2,7 +2,11 @@
 
 1. Install 1Password and sign in.
 1. Go to System Preferences → Apple ID and sign in with your Apple ID.
-1. Set the new machine's hostname.
+1. Generate a new SSH key and add it to GitHub.
+   ```
+   ssh-keygen -t ed25519 -C hmarr@<HOSTNAME>
+   ```
+3. Set the new machine's hostname.
    ```
    bin/set-hostname.sh <HOSTNAME>
    ```
@@ -26,7 +30,6 @@
    ```
    bin/update-alacritty-icon.sh
    ```
-1. Set up SSH and make sure you can and push to GitHub.
 1. Set up PGP key, add the following to `~/.gitconfig.local`, and make sure you can sign commits.
    ```
    [commit]
