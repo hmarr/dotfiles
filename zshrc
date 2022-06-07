@@ -297,7 +297,7 @@ docker-debug-latest() {
 
 ssh_bin=$(which ssh)
 ssh() {
-  if ! ssh-add -l | grep "hmarr@work-macbook-pro" > /dev/null; then
+  if ! ssh-add -l | grep "hmarr@" > /dev/null; then
     ssh-add "$HOME/.ssh/id_ed25519"
   fi
   $ssh_bin "$@"
