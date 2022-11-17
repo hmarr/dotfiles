@@ -21,7 +21,7 @@ brew "tmux"                 # Terminal multiplexer
 brew "tree"                 # Show directory trees
 brew "watch"                # Run a program periodically
 brew "wget"                 # Download things
-brew "youtube-dl"           # Download youtube videos
+brew "yt-dlp"               # Download youtube videos
 
 # Custom taps
 tap "hmarr/tap"
@@ -31,9 +31,7 @@ brew "hmarr/tap/codeowners" # Check code ownership
 cask "alacritty"            # Fast, minimal terminal
 cask "docker"               # Containers
 cask "raycast"              # Spotlight++
-cask "rectangle"            # Window manager
 cask "spotify"              # Ear candy
-cask "unshaky"              # Prevent duplicate keypresses
 cask "vitals"               # Process resource monitor
 cask "visual-studio-code"   # Editor / IDE
 cask "vlc"                  # Video player
