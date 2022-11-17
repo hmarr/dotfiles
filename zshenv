@@ -1,4 +1,4 @@
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH:$HOME/src/github.com/hmarr/scripts"
 export EDITOR=vim
 
 export GOPATH="$HOME"
@@ -11,3 +11,4 @@ export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30
 export GO111MODULE=on
 
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+. "$HOME/.cargo/env"

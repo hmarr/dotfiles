@@ -38,7 +38,7 @@ alias fast='networkQuality -v'
 # History {{{
 
 # Save history
-HISTSIZE=100000
+HISTSIZE=1000000
 SAVEHIST=$HISTSIZE
 HISTFILE=~/.zsh_history
 
@@ -155,6 +155,11 @@ zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f%{$reset_color%}"
 precmd() {
   type notify-after-command > /dev/null && _post_cmd_notify
+  if [ -z "$NO_GIT_STATUS_IN_PROMPT" ]; then
+    zstyle ':vcs_info:*' check-for-changes true
+  else
+    zstyle ':vcs_info:*' check-for-changes false
+  fi
   vcs_info
 }
 
@@ -391,3 +396,4 @@ csvq() {
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 [ -f ~/.zshrc_local/zshrc ] && source ~/.zshrc_local/zshrc || true
+

@@ -10,6 +10,7 @@ _scratch/
 .dockerignore
 .byebug_history
 .env.local
+.ipynb_checkpoints
 vendor/
 target/debug
 target/rls
