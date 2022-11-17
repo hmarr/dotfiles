@@ -131,9 +131,6 @@ vnoremap <leader>x "+x
 nnoremap <leader>p "+gp
 nnoremap <leader>P "+gP
 
-" Ag shortcut. <SPACE> there to keep space being stripped :|
-nnoremap <leader>a :Ag!<SPACE>
-
 " Substitute
 nnoremap <leader>s :%s//g<left><left>
 

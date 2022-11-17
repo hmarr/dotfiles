@@ -9,6 +9,7 @@ call plug#begin('~/.vim/plugged')
 
 " Tools
 Plug 'vim-test/vim-test'
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/nerdcommenter'
@@ -49,6 +50,11 @@ endif
 " Fuzzy file searching
 nnoremap <c-p> :FZF<CR>
 
+" Use rg to search for the word under the cursor
+nnoremap <leader>a :Rg! <C-R><C-W><CR>
+" Use rg to search within files. <SPACE> there to keep space being stripped
+nnoremap <leader>A :Rg!<SPACE>
+
 " Run tests in neovim terminal
 let test#strategy = 'vimterminal'
 
@@ -60,8 +66,9 @@ let g:ftplugin_sql_omni_key = '<C-j>'
 
 " Tell fzf to use the copy installed by homebrew
 set rtp+=/usr/local/opt/fzf
+set rtp+=/opt/homebrew
 
-" Use ag to find files for fzf, so .gitignore and friends are honoured
+" Use ripgrep to find files for fzf, so .gitignore and friends are honoured
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --glob="!.git/" --ignore-file="$HOME/.gitignore_global"'
 
 " Make vim-jsx work for .js files
