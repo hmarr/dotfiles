@@ -11,6 +11,7 @@
 	excludesfile = ~/.gitignore_global
 [push]
 	default = simple
+	autoSetupRemote = true
 [branch]
 	autosetuprebase = always
 [commit]
@@ -21,7 +22,7 @@
 [init]
 	defaultBranch = main
 [include]
-	# This should be symlinked to _either_ of gitconfig-github-{ssh,http}-auth
+	# This should be symlinked to _one_ of gitconfig-github-{ssh,http,macos-arm64-gh}-auth
 	path = ~/.gitconfig-github-auth
 [include]
 	path = ~/.gitconfig.local

@@ -80,6 +80,8 @@ link_dotfile "vimrc-extras.vim" ".vim/vimrc-extras.vim"
 link_dotfile "gitconfig" ".gitconfig"
 if [ "$CODESPACES" = "true" ]; then
   link_dotfile "gitconfig-github-http-auth" ".gitconfig-github-auth"
+elif [ "$(uname -s)" = "Darwin" ]; then
+  link_dotfile "gitconfig-github-macos-$(uname -m)-gh-auth" ".gitconfig-github-auth"
 else
   link_dotfile "gitconfig-github-ssh-auth" ".gitconfig-github-auth"
 fi
