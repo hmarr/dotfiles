@@ -269,9 +269,10 @@ gh-clone() {
     return
   fi
 
-  mkdir -p "$dest"
-  git clone "git@github.com:$repo" "$dest"
-  cd "$dest"
+  mkdir -p "$(dirname $dest)"
+  if git clone "git@github.com:$repo" "$dest"; then
+    cd "$dest"
+  fi
 }
 
 docker-debug() {
