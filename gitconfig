@@ -21,8 +21,17 @@
 	ff = only
 [init]
 	defaultBranch = main
-[include]
-	# This should be symlinked to _one_ of gitconfig-github-{ssh,http,macos-arm64-gh}-auth
-	path = ~/.gitconfig-github-auth
+
+# Use HTTPS auth via the GitHub CLI
+[url "https://github.com/"]
+	insteadOf = gh:
+	insteadOf = git@github.com:
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
+
 [include]
 	path = ~/.gitconfig.local

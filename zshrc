@@ -270,7 +270,7 @@ gh-clone() {
   fi
 
   mkdir -p "$(dirname $dest)"
-  if git clone "git@github.com:$repo" "$dest"; then
+  if git clone "https://github.com/$repo" "$dest"; then
     cd "$dest"
   fi
 }
