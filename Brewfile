@@ -15,8 +15,6 @@ brew "rbspy"                # Sampling profiler for Ruby
 brew "ripgrep"              # Faster ag built in Rust
 brew "shellcheck"           # Shell linter
 brew "socat"                # Socket swiss army knife
-brew "the_silver_searcher"  # Faster ack
-brew "tmate"                # Multiplayer terminal
 brew "tmux"                 # Terminal multiplexer
 brew "tree"                 # Show directory trees
 brew "watch"                # Run a program periodically
@@ -44,7 +42,6 @@ mas "Gifski", id: 1351639930
 mas "Hand Mirror", id: 1502839586
 mas "Hidden Bar", id: 1452453066
 mas "Tailscale", id: 1475387142
-mas "Tweetbot", id: 1384080005
 mas "WhatsApp", id: 1147396723
 
 # Fonts
