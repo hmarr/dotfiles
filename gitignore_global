@@ -11,6 +11,9 @@ _scratch/
 .byebug_history
 .env.local
 .ipynb_checkpoints
+.venv/
+__pycache__/
 vendor/
 target/debug
 target/rls
+*.scratch

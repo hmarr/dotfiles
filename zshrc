@@ -241,7 +241,7 @@ gh-pr() {
 gh-open() {
   local file="$1"
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    repo=$(git remote get-url origin|sed "s/:/\\//; s/\\.git//; s/git@/https:\\/\\//")
+    repo=$(git remote get-url origin|sed "s/:/\\//; s/\\.git//; s/git@/https:\\/\\//; s/https\\/\\//https:\\//")
     if [ -z "$file" ]; then
       open "${repo}"
     else
@@ -390,7 +390,30 @@ csvq() {
     return 1
   fi
 
-  sqlite3 -csv -cmd ".import ""$1"" data" ':memory:' "$query"
+  sqlite3 -csv -cmd ".import ""$csvpath"" data" ':memory:' "$query"
+}
+
+csv2sqlite() {
+  csvpath="$1"
+  if [ -z "$csvpath" ]; then
+    echo "usage: csv2sqlite CSV-FILE"
+    return 1
+  fi
+  if [ ! -e "$csvpath" ]; then
+    echo "no csv file found at path '$csvpath'"
+    return 1
+  fi
+
+  basename="${csvpath%.csv}"
+  dbpath="$basename.sqlite"
+  if [ -e "$dbpath" ]; then
+    echo "$dbpath already exists, aborting"
+    return 1
+  fi
+
+  tablename="${basename//[^[:alnum:]]/}"
+  sqlite3 -csv -cmd ".import ""$csvpath"" $tablename" "$dbpath" ""
+  echo "created $dbpath"
 }
 
 # }}}
