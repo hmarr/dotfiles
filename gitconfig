@@ -6,7 +6,7 @@
 	ci = commit
 	st = status
 	rp = pull --rebase
-	tidy-branches = !git branch --merged master | grep -v -e '^* ' -e '^. master$' -e '^. dev$' | xargs git branch -d
+	tidy-branches = !git branch --merged main | grep -v -e '^* ' -e '^. main$' -e '^. dev$' | xargs git branch -d
 [core]
 	excludesfile = ~/.gitignore_global
 [push]
