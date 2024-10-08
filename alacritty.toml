@@ -1,0 +1,86 @@
+# Material Theme, converted from iTerm2 colors
+[colors.bright]
+black = "0xb0bec4"
+blue = "0x80d7fe"
+cyan = "0xa7fdeb"
+green = "0xb9f6c9"
+magenta = "0xff80ab"
+red = "0xff8980"
+white = "0xfefefe"
+yellow = "0xffe47e"
+
+[colors.cursor]
+cursor = "0xedeeed"
+text = "0x000000"
+
+[colors.normal]
+black = "0x546d79"
+blue = "0x40c4fe"
+cyan = "0x64fcda"
+green = "0x69f0ad"
+magenta = "0xff3f80"
+red = "0xff5151"
+white = "0xfefefe"
+yellow = "0xffd73f"
+
+[colors.primary]
+background = "0x263137"
+foreground = "0xeceef0"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 14.0
+
+[font.normal]
+family = "JetBrains Mono"
+
+[font.offset]
+x = 0
+y = 1
+
+# Only open URLs on Cmd + click
+[[hints.enabled]]
+command = "open"
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+
+[hints.enabled.mouse]
+enabled = true
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001Bb"
+key = "Left"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u001Bf"
+key = "Right"
+mods = "Alt"
+
+[[keyboard.bindings]]
+action = "ToggleSimpleFullscreen"
+key = "Return"
+mods = "Command"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Command"
+
+[keyboard.bindings.command]
+args = ["-na", "Alacritty.app"]
+program = "open"
+
+# Copy selected text to the clipboard
+[selection]
+save_to_clipboard = true
+
+[window.dimensions]
+columns = 100
+lines = 30
+
+[window.padding]
+x = 6
+y = 6
