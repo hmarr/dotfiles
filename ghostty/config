@@ -10,7 +10,8 @@ theme = ayu
 shell-integration-features = no-cursor
 
 window-width = 120
-window-height = 34
+window-height = 33
 window-padding-x = 8
 window-padding-y = 8
 window-padding-color = extend
+window-padding-balance = true
