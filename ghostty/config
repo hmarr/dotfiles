@@ -2,7 +2,9 @@ cursor-style-blink = false
 
 font-family = JetBrains Mono
 font-thicken = true
+font-feature = -calt
 
+macos-non-native-fullscreen = true
 macos-titlebar-style = tabs
 
 theme = ayu
