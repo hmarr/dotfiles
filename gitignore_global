@@ -14,6 +14,8 @@ _scratch/
 .venv/
 __pycache__/
 vendor/
-target/debug
-target/rls
+**/target/debug/
+**/target/release/
+**/target/rls/
+node_modules/
 *.scratch
