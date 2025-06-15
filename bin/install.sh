@@ -34,10 +34,28 @@ move_to_backup_dir() {
   return $?
 }
 
+is_ignored() {
+  local source="$1"
+  if [ -f "ignored.local" ]; then
+    while IFS= read -r pattern || [ -n "$pattern" ]; do
+      [ -z "$pattern" ] && continue
+      case "$source" in
+        $pattern) return 0 ;;
+      esac
+    done < ignored.local
+  fi
+  return 1
+}
+
 link_dotfile() {
   local source="$1"
   local dest="$2"
   local full_dest="$HOME/$dest"
+
+  if is_ignored "$source"; then
+    yellow "⊘ $dest is ignored"
+    return
+  fi
 
   if [ -L "$full_dest" ] && [ "$full_dest" -ef "$source" ]; then
     yellow "✔ $dest is already linked"
