@@ -33,7 +33,7 @@ alias fast='networkQuality -v'
 # History {{{
 
 # Save history
-HISTSIZE=1000000
+HISTSIZE=10000000
 SAVEHIST=$HISTSIZE
 HISTFILE=~/.zsh_history
 
@@ -155,13 +155,12 @@ precmd() {
   vcs_info
 }
 
-function prompt_language_env {
-  local language_env=""
-  if [ -n "$VIRTUAL_ENV" ]; then
-    language_env="🐍  "
-  fi
-  echo "$language_env"
+prompt_host() {
+  echo "${PROMPT_HOSTNAME:-$(hostname)}"
 }
+
+# Define an empty prompt_extra if it's not defined
+(( ${+functions[prompt_extra]} )) || prompt_extra() {}
 
 function set_prompt {
   local prompt_character="%(?,%{$fg[green]%},%{$fg[red]%})%(!,#,$)%{$reset_color%}"
@@ -170,7 +169,7 @@ function set_prompt {
     cwd="%F{244}%c%f"
   fi
 
-  PROMPT="\$(prompt_language_env)${cwd} ${prompt_character} "
+  PROMPT="%F{134}\$(prompt_host) %F{71}\$(prompt_extra)%f%F{166}%(4~|%-1~/…/%2~|%3~)%f $prompt_character "
   RPROMPT='${vcs_info_msg_0_}'
 }
 set_prompt
@@ -179,7 +178,7 @@ set_prompt
 
 # Custom functions {{{
 
-code_dir="$HOME/src"
+code_dir="${CODE_DIR:-$HOME/src}"
 jp() {
   local candidates="$(find "$code_dir" -mindepth 3 -maxdepth 3 -type d |
     cut -f5- -d/ |
@@ -399,4 +398,3 @@ csv2sqlite() {
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 [ -f ~/.zshrc_local/zshrc ] && source ~/.zshrc_local/zshrc || true
-
