@@ -11,7 +11,6 @@ alias g="git"
 alias gst="git status"
 alias vi="vim"
 alias vip="vim -c 'autocmd VimEnter * nested FZF'"
-alias bx="bundle exec"
 
 alias -g router_ip="\$(route -n get default -ifscope en0 | awk '/gateway/ { print \$2 }')"
 
@@ -19,18 +18,14 @@ alias docker-killall="docker ps | tail -n +2 | cut -f1 -d' ' | xargs docker kill
 alias docker-cleanup="docker ps -a | cut -f1 -d' ' | tail -n +2 | xargs docker rm"
 alias docker-exec-latest="docker exec -ti \$(docker ps --latest --quiet) bash"
 
-alias fix-audio="sudo launchctl unload /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist && sudo launchctl load /System/Library/LaunchDaemons/com.apple.audio.coreaudiod.plist"
-alias rubocop-changed="git ls-files -m | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop"
-alias rubocop-branch="git diff --name-only master | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop"
-alias kill-gocode="ps -ef | grep \"\$HOME/bin/gocode\" | grep -v grep | awk '{ print \$2 }' | xargs kill -9"
 alias flush-dns-cache="sudo killall -HUP mDNSResponder"
 
 alias todo="vim ~/TODO.md"
+
 alias tf="terraform"
 
 alias vimrc="vim -p $HOME/.vimrc $HOME/.vim/vimrc-vanilla.vim $HOME/.vim/vimrc-extras.vim"
 
-alias ecr-login='eval "$(aws ecr get-login --no-include-email)"'
 alias fast='networkQuality -v'
 
 # }}}
@@ -100,9 +95,6 @@ if [[ -r ~/.ssh/config ]]; then
   _ssh_config+=($(cat ~/.ssh/config | grep -v '\*' | sed -ne 's/Host[=\t ]//p'))
 fi
 zstyle ':completion:*:hosts' hosts $_ssh_config
-
-# Complete Ruby versions with chruby
-compctl -g '~/.rubies/*(:t)' chruby
 
 # fzf fuzzy completion
 if [ -f "$HOME/.fzf.zsh" ]; then
@@ -206,26 +198,11 @@ jp() {
   fi
 }
 compctl -W "$code_dir" -/ jp
-alias j=jp
 
 batt() {
   time_remaining=$(pmset -g batt | grep -Eo "([0-9]+:[0-9]+)")
   pct_remaining=$(pmset -g batt | grep -Eo "([0-9]+\%)")
   echo "$time_remaining remaining ($pct_remaining)"
-}
-
-_post_cmd_notify() {
-  LAST_EXIT_CODE=$?
-  CMD=$(fc -ln -1)
-  (notify-after-command "$CMD" "$LAST_EXIT_CODE" &) &> /dev/null
-}
-
-notify() {
-  osascript \
-    -e 'on run argv' \
-    -e '  display notification item 1 of argv with title "Terminal"' \
-    -e 'end' \
-    -- "$*"
 }
 
 gh-pr() {
@@ -303,8 +280,10 @@ docker-debug-latest() {
 
 ssh_bin=$(which ssh)
 ssh() {
-  if ! ssh-add -l | grep "hmarr@" > /dev/null; then
-    ssh-add "$HOME/.ssh/id_ed25519"
+  if [ -e "$HOME/.ssh/id_ed25519" ]; then
+    if ! ssh-add -l | grep "hmarr@" > /dev/null; then
+      ssh-add "$HOME/.ssh/id_ed25519"
+    fi
   fi
   $ssh_bin "$@"
 }
