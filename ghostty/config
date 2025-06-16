@@ -4,7 +4,7 @@ font-family = JetBrains Mono
 font-thicken = true
 font-feature = -calt
 
-macos-non-native-fullscreen = true
+macos-non-native-fullscreen = false
 macos-titlebar-style = tabs
 
 theme = ayu
@@ -17,3 +17,4 @@ window-padding-x = 8
 window-padding-y = 8
 window-padding-color = extend
 window-padding-balance = true
+keybind = shift+enter=text:\n
