@@ -10,7 +10,14 @@ alias ....="cd ../../.."
 alias g="git"
 alias gst="git status"
 alias vi="vim"
-alias vip="vim -c 'autocmd VimEnter * nested FZF'"
+vip() {
+  local file_paths=($(rg --files | fzf -m --preview 'bat {1} --color=always'))
+  if [ ${#file_paths[@]} -gt 0 ]; then
+    vim -p "${file_paths[@]}"
+  fi
+}
+
+alias c="claude"
 
 alias -g router_ip="\$(route -n get default -ifscope en0 | awk '/gateway/ { print \$2 }')"
 
