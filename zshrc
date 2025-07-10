@@ -130,6 +130,11 @@ zstyle ':completion:*' menu select list-colors "${(@s.:.)LS_COLORS}"
 autoload -Uz colors
 colors
 
+# Enable Ctrl-x-e to edit the command line in an editor
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+
 # Add more word separators
 WORDCHARS=${WORDCHARS//[\/.-]}
 
