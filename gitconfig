@@ -21,6 +21,11 @@
 	ff = only
 [init]
 	defaultBranch = main
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
 
 # Use HTTPS auth via the GitHub CLI
 [url "https://github.com/"]
