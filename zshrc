@@ -9,6 +9,7 @@ alias ....="cd ../../.."
 
 alias g="git"
 alias gst="git status"
+alias gpb="git push -u origin \$(git branch --show-current)"
 alias vi="vim"
 vip() {
   local file_paths=($(rg --files | fzf -m --preview 'bat {1} --color=always'))
