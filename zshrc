@@ -12,7 +12,11 @@ alias gst="git status"
 alias gpb="git push -u origin \$(git branch --show-current)"
 alias vi="vim"
 vip() {
-  local file_paths=($(rg --files | fzf -m --preview 'bat {1} --color=always'))
+  local preview_cmd='head -n 200 {1}'
+  if command -v bat &> /dev/null; then
+    preview_cmd='bat {1} --color=always --line-range :200'
+  fi
+  local file_paths=($(rg --files | fzf -m --preview "$preview_cmd"))
   if [ ${#file_paths[@]} -gt 0 ]; then
     vim -p "${file_paths[@]}"
   fi
