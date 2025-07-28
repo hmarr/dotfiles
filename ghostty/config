@@ -9,6 +9,9 @@ macos-titlebar-style = tabs
 
 theme = ayu
 
+# Scrollback limit (in bytes) - 100MB
+scrollback-limit = 100000000
+
 shell-integration-features = no-cursor
 
 window-width = 120
