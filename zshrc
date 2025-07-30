@@ -187,7 +187,22 @@ precmd() {
 }
 
 prompt_host() {
-  echo "${PROMPT_HOSTNAME:-$(hostname)}"
+  if [[ "$(hostname)" == "hmarr-mbp" ]]; then
+    return
+  fi
+  echo "${PROMPT_HOSTNAME:-$(hostname)} "
+}
+
+_prompt_cwd() {
+  local col="166"
+  if [[ "$(hostname)" == "hmarr-mbp" ]]; then
+    if [ "$TERMINAL_THEME" = "light" ]; then
+      col="244"
+    else
+      col="250"
+    fi
+  fi
+  echo "%F{$col}%(4~|%-1~/…/%2~|%3~)%f"
 }
 
 # Define an empty prompt_extra if it's not defined
@@ -200,7 +215,7 @@ function set_prompt {
     cwd="%F{244}%c%f"
   fi
 
-  PROMPT="%F{134}\$(prompt_host) %F{71}\$(prompt_extra)%f%F{166}%(4~|%-1~/…/%2~|%3~)%f $prompt_character "
+  PROMPT="%F{134}\$(prompt_host)%F{71}\$(prompt_extra)%f\$(_prompt_cwd) $prompt_character "
   RPROMPT='${vcs_info_msg_0_}'
 }
 set_prompt
