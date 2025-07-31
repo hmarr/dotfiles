@@ -26,10 +26,10 @@
    ```
    brew bundle --global
    ```
-1. Update Alacritty's icon.
-   ```
-   bin/update-alacritty-icon.sh
-   ```
+1. Make sure terminals are set to treat the Option key as Meta.
+  - Ghostty does this by default for US keyboard layouts (`macos-option-as-alt` otherwise)
+  - In iTerm2, go to Profile -> Keys and set Left Option Key to Esc+
+  - In vscode, set `terminal.integrated.macOptionIsMeta` to `true`
 1. Set up PGP key and make sure you can sign commits.
-1. Sign in to Chrome, Raycast, Tailscale, Tweetbot, etc.
-1. Copy configuration over for Rectangle and Raycast. Configure Amphetamine.
+1. Sign in to Chrome, Raycast, Tailscale, etc.
+1. Copy configuration over for Raycast. Configure Amphetamine.

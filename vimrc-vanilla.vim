@@ -154,7 +154,9 @@ nnoremap vv ^vg_
 
 " Switch tabs easily
 nnoremap ˙ gT
+nnoremap <A-h> gT
 nnoremap ¬ gt
+nnoremap <A-l> gt
 nnoremap <esc>h gT
 nnoremap <esc>l gt
 
