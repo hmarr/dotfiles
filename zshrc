@@ -111,9 +111,11 @@ zstyle ':completion:*:hosts' hosts $_ssh_config
 # fzf fuzzy completion
 if [ -f "$HOME/.fzf.zsh" ]; then
   source "$HOME/.fzf.zsh"
-  export FZF_COMPLETION_TRIGGER=''
-  bindkey '^T' fzf-completion
-  bindkey '^I' $fzf_default_completion
+  export FZF_CTRL_R_OPTS="
+    --wrap
+    --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+    --color header:italic
+    --header 'Press CTRL-Y to copy command into clipboard'"
 fi
 
 # }}}
@@ -266,6 +268,21 @@ gh-clone() {
   if git clone "https://github.com/$repo" "$dest"; then
     cd "$dest"
   fi
+}
+
+prs() {
+  local author="${1:-@me}"
+  GH_FORCE_TTY=true gh pr list --author "$author" |
+    tail +5 |
+    fzf \
+      --ansi \
+      --header 'ctrl-o: open in browser | alt-p: preview | alt-u: copy url | alt-y: copy branch' \
+      --bind 'ctrl-o:become(gh pr view --web {1})' \
+      --bind 'alt-u:execute-silent(gh pr view --json url $(echo {1} | sed "s/#//") | jq -r .url | pbcopy)' \
+      --bind 'alt-y:execute-silent(gh pr view --json headRefName -q .headRefName {1} | pbcopy)' \
+      --bind 'alt-p:toggle-preview' \
+      --preview-window=hidden \
+      --preview='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh pr view {1}'
 }
 
 docker-debug() {
