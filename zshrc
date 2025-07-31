@@ -270,8 +270,22 @@ gh-clone() {
   fi
 }
 
+fzf-git-branch() {
+  git rev-parse HEAD > /dev/null 2>&1 || return
+  git branch \
+    --color=always \
+    --format=$'%(HEAD) %(color:magenta)%(refname:short)  %(color:blue)%(authorname) %(color:yellow)%(committerdate:relative)' |
+    fzf \
+      --height 50% \
+      --ansi \
+      --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {1})' \
+      --bind 'alt-p:toggle-preview' \
+      --accept-nth 1 |
+    sed "s/.* //"
+}
+
 gs() {
-  local branch="$(git branch | fzf | sed 's/^\* //' | awk '{print $1}')"
+  local branch="$(fzf-git-branch)"
   if [ -n "$branch" ]; then
     git switch "$branch"
   fi
@@ -283,8 +297,9 @@ prs() {
     tail +5 |
     fzf \
       --ansi \
-      --header 'ctrl-o: open in browser | alt-p: preview | alt-u: copy url | alt-y: copy branch' \
-      --bind 'ctrl-o:become(gh pr view --web {1})' \
+      --header 'enter/ctrl-o: open in browser | alt-p: preview | alt-u: copy url | alt-y: copy branch' \
+      --bind 'enter:become(gh pr view --web {1})' \
+      --bind 'ctrl-o:execute-silent(gh pr view --web {1})' \
       --bind 'alt-u:execute-silent(gh pr view --json url $(echo {1} | sed "s/#//") | jq -r .url | pbcopy)' \
       --bind 'alt-y:execute-silent(gh pr view --json headRefName -q .headRefName {1} | pbcopy)' \
       --bind 'alt-p:toggle-preview' \
