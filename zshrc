@@ -270,6 +270,13 @@ gh-clone() {
   fi
 }
 
+gs() {
+  local branch="$(git branch | fzf | sed 's/^\* //' | awk '{print $1}')"
+  if [ -n "$branch" ]; then
+    git switch "$branch"
+  fi
+}
+
 prs() {
   local author="${1:-@me}"
   GH_FORCE_TTY=true gh pr list --author "$author" |
