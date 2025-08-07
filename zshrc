@@ -274,9 +274,11 @@ fzf-git-branch() {
   git rev-parse HEAD > /dev/null 2>&1 || return
   git branch \
     --color=always \
+    --sort committerdate \
     --format=$'%(HEAD) %(color:magenta)%(refname:short)  %(color:blue)%(authorname) %(color:yellow)%(committerdate:relative)' |
     fzf \
       --height 50% \
+      --tac \
       --ansi \
       --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {1})' \
       --bind 'alt-p:toggle-preview' \
