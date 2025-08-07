@@ -12,7 +12,7 @@ _scratch/
 .env.local
 .ipynb_checkpoints
 .venv/
-__pycache__/
+**/__pycache__/
 vendor/
 **/target/debug/
 **/target/release/
