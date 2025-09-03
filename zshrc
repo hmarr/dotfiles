@@ -40,6 +40,8 @@ alias vimrc="vim -p $HOME/.vimrc $HOME/.vim/vimrc-vanilla.vim $HOME/.vim/vimrc-e
 
 alias fast='networkQuality -v'
 
+alias jless="jq -C . | less -R"
+
 # }}}
 
 # History {{{
@@ -134,7 +136,10 @@ zle -N self-insert url-quote-magic
 
 # Better completion
 autoload -Uz compinit
-compinit
+# Allow skipping compinit if it will be handled elsewhere
+if [[ -z "$SKIP_DOTFILES_COMPINIT" ]]; then
+  compinit
+fi
 
 # Select menu items when tabbing through
 zstyle ':completion:*' menu select list-colors "${(@s.:.)LS_COLORS}"
@@ -163,9 +168,16 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:*' unstagedstr '*'
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{magenta}%b%f%{$reset_color%}"
+zstyle ':vcs_info:*' formats " %F{blue}%c%u %F{140}%b%f%{$reset_color%}"
 precmd() {
   type notify-after-command > /dev/null && _post_cmd_notify
+
+  if [ "$(git config --get zsh-prompt.disable-git-info)" = "true" ]; then
+    local git_ref="$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)"
+    vcs_info_msg_0_=" %F{140}$git_ref%f%{$reset_color%}"
+    return
+  fi
+
   if [ -z "$NO_GIT_STATUS_IN_PROMPT" ]; then
     zstyle ':vcs_info:*' check-for-changes true
   else
@@ -299,11 +311,12 @@ prs() {
     tail +5 |
     fzf \
       --ansi \
-      --header 'enter/ctrl-o: open in browser | alt-p: preview | alt-u: copy url | alt-y: copy branch' \
+      --header 'enter/ctrl-o: open in browser | alt-p: preview | alt-m: merge | alt-u: copy url | alt-y: copy branch' \
       --bind 'enter:become(gh pr view --web {1})' \
       --bind 'ctrl-o:execute-silent(gh pr view --web {1})' \
       --bind 'alt-u:execute-silent(gh pr view --json url $(echo {1} | sed "s/#//") | jq -r .url | pbcopy)' \
       --bind 'alt-y:execute-silent(gh pr view --json headRefName -q .headRefName {1} | pbcopy)' \
+      --bind 'alt-m:execute(gh pr merge {1})' \
       --bind 'alt-p:toggle-preview' \
       --preview-window=hidden \
       --preview='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh pr view {1}'
