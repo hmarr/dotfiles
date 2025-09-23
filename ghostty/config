@@ -4,10 +4,11 @@ font-family = JetBrains Mono
 font-thicken = true
 font-feature = -calt
 
-macos-non-native-fullscreen = false
+macos-non-native-fullscreen = padded-notch
 macos-titlebar-style = tabs
 
 theme = ayu
+split-divider-color = 203040
 
 # Scrollback limit (in bytes) - 100MB
 scrollback-limit = 100000000
