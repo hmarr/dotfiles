@@ -480,6 +480,10 @@ csv2sqlite() {
   echo "created $dbpath"
 }
 
+notify() {
+  printf '\x1b]9;%s\x1b\\' "$1"
+}
+
 # }}}
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
