@@ -481,7 +481,11 @@ csv2sqlite() {
 }
 
 notify() {
-  printf '\x1b]9;%s\x1b\\' "$1"
+  if [ -n "$TMUX" ]; then
+    printf '\033Ptmux;\033\033]9;%s\007\033\\' "$1"
+  else
+    printf '\033]9;%s\007' "$1"
+  fi
 }
 
 # }}}
