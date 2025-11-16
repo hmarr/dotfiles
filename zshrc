@@ -41,6 +41,7 @@ alias vimrc="vim -p $HOME/.vimrc $HOME/.vim/vimrc-vanilla.vim $HOME/.vim/vimrc-e
 alias fast='networkQuality -v'
 
 alias jless="jq -C . | less -R"
+alias yless="vim +'set ft=yaml' -R -"
 
 # }}}
 

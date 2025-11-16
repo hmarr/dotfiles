@@ -131,6 +131,17 @@ vnoremap <leader>x "+x
 nnoremap <leader>p "+gp
 nnoremap <leader>P "+gP
 
+" If connected via ssh, yank to the system clipboard using osc52
+if !empty($SSH_CONNECTION)
+  function! Osc52Yank()
+    let buffer = system('base64', @0)
+    let buffer = substitute(buffer, "\n$", "", "")
+    let buffer = "\e]52;c;" . buffer . "\x07"
+    call writefile([buffer], '/dev/tty', 'b')
+  endfunction
+  vnoremap <Leader>y y:call Osc52Yank()<CR>
+endif
+
 " Substitute
 nnoremap <leader>s :%s//g<left><left>
 
@@ -249,3 +260,4 @@ if !empty($LOCAL_VIMRC)
 endif
 
 " }}}
+
