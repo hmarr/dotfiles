@@ -103,3 +103,4 @@ link_dotfile "ghostty/config" "Library/Application Support/com.mitchellh.ghostty
 link_dotfile "Brewfile" ".Brewfile"
 link_dotfile "gpg-agent.$(uname -m).conf" ".gnupg/gpg-agent.conf"
 link_dotfile "ripgreprc" ".config/ripgrep/rc"
+link_dotfile "tmux.conf" ".tmux.conf"
