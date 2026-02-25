@@ -4,19 +4,32 @@ alias l="ls -AF"
 alias ll="ls -lh"
 alias la="ls -A"
 
+alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 
 alias g="git"
 alias gst="git status"
 alias gpb="git push -u origin \$(git branch --show-current)"
+alias gpf="git push -u origin --force-with-lease \$(git branch --show-current)"
+alias g.="cd \"\$(git rev-parse --show-toplevel)\""
 alias vi="vim"
 vip() {
   local preview_cmd='head -n 200 {1}'
   if command -v bat &> /dev/null; then
     preview_cmd='bat {1} --color=always --line-range :200'
   fi
-  local file_paths=($(rg --files | fzf -m --preview "$preview_cmd"))
+  local file_paths=($(rg --hidden --glob '!.git/*' --files | fzf -m --preview "$preview_cmd"))
+  if [ ${#file_paths[@]} -gt 0 ]; then
+    vim -p "${file_paths[@]}"
+  fi
+}
+
+vig() {
+  local cat_cmd='cat'
+  command -v bat &>/dev/null && cat_cmd='bat --color=always'
+  local preview_cmd="f={-1}; if git ls-files --error-unmatch \"\$f\" &>/dev/null; then git diff --color=always -- \"\$f\"; else $cat_cmd \"\$f\"; fi"
+  local file_paths=($(git status --short | fzf -m --preview "$preview_cmd" | awk '{print $NF}'))
   if [ ${#file_paths[@]} -gt 0 ]; then
     vim -p "${file_paths[@]}"
   fi
@@ -154,6 +167,9 @@ colors
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^xe' edit-command-line
+
+# Transient rprompt to make copy+pasting easier
+setopt transient_rprompt
 
 # Add more word separators
 WORDCHARS=${WORDCHARS//[\/.-]}
@@ -482,10 +498,21 @@ csv2sqlite() {
 }
 
 notify() {
-  if [ -n "$TMUX" ]; then
+  if [ -n "$TMUX" ] || [[ "$TERM" == tmux-* ]] || [[ "$TERM" == screen-* ]]; then
+    # Wrap in DCS passthrough so the OSC 9 traverses tmux to the terminal.
+    # The TERM check handles the case where we're SSH'd from a tmux session.
     printf '\033Ptmux;\033\033]9;%s\007\033\\' "$1"
   else
     printf '\033]9;%s\007' "$1"
+  fi
+}
+
+# Copy to the clipboard using pbcopy on a mac and OSC52 if remote
+copy() {
+  if [[ -z "$SSH_CONNECTION" ]] && command -v pbcopy &>/dev/null; then
+    pbcopy
+  else
+    printf '\033]52;c;%s\a' "$(cat | base64 | tr -d '\n')"
   fi
 }
 
