@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Pick a URL from the current tmux pane (incl. recent scrollback) to open or copy.
+# Bound to prefix+u in tmux.conf.
+
+opener=xdg-open
+command -v open &>/dev/null && opener=open
+
+tmux capture-pane -J -p -S -2000 \
+  | grep -oE 'https?://[^[:space:]<>"'\'')]+' \
+  | tac | awk '!seen[$0]++' \
+  | fzf-tmux -d 20 --header 'enter: open · ctrl-y: copy' \
+      --bind "enter:become($opener {})" \
+      --bind 'ctrl-y:execute-silent(tmux set-buffer -w -- {})+abort' >/dev/null
+
+exit 0
