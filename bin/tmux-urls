@@ -5,7 +5,10 @@
 opener=xdg-open
 command -v open &>/dev/null && opener=open
 
+w=$(tmux display -p '#{pane_width}')
+
 tmux capture-pane -J -p -S -2000 \
+  | awk -v w="$w" 'NR>1{if(length(p)==w)printf"%s",p;else print p}{p=$0}END{print p}' \
   | grep -oE 'https?://[^[:space:]<>"'\'')]+' \
   | tac | awk '!seen[$0]++' \
   | fzf-tmux -d 20 --header 'enter: open · ctrl-y: copy' \
