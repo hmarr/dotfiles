@@ -47,6 +47,19 @@ is_ignored() {
   return 1
 }
 
+# macOS always has a desktop. On Linux, check for a graphical session, or
+# installed session files in case we're connected over ssh.
+has_desktop() {
+  if [ "$(uname -s)" = "Darwin" ]; then
+    return 0
+  fi
+  if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+    return 0
+  fi
+  compgen -G "/usr/share/xsessions/*.desktop" >/dev/null ||
+    compgen -G "/usr/share/wayland-sessions/*.desktop" >/dev/null
+}
+
 link_dotfile() {
   local source="$1"
   local dest="$2"
@@ -98,19 +111,24 @@ link_dotfile "vimrc-extras.vim" ".vim/vimrc-extras.vim"
 link_dotfile "gitconfig" ".gitconfig"
 link_dotfile "gitignore_global" ".gitignore_global"
 link_dotfile "projections.json" ".projections.json"
-link_dotfile "alacritty.toml" ".config/alacritty/alacritty.toml"
 link_dotfile "ripgreprc" ".config/ripgrep/rc"
 link_dotfile "tmux.conf" ".tmux.conf"
 link_dotfile "bin/tmux-urls" "bin/tmux-urls"
 link_dotfile "bin/copy" "bin/copy"
 
-case "$(uname -s)" in
-  Darwin)
+if [ "$(uname -s)" = "Darwin" ]; then
+  link_dotfile "Brewfile" ".Brewfile"
+  link_dotfile "gpg-agent.$(uname -m).conf" ".gnupg/gpg-agent.conf"
+fi
+
+# Terminal emulator configs are only useful on machines with a desktop
+if has_desktop; then
+  link_dotfile "alacritty.toml" ".config/alacritty/alacritty.toml"
+  if [ "$(uname -s)" = "Darwin" ]; then
     link_dotfile "ghostty/config" "Library/Application Support/com.mitchellh.ghostty/config"
-    link_dotfile "Brewfile" ".Brewfile"
-    link_dotfile "gpg-agent.$(uname -m).conf" ".gnupg/gpg-agent.conf"
-    ;;
-  Linux)
+  else
     link_dotfile "ghostty/config" ".config/ghostty/config"
-    ;;
-esac
+  fi
+else
+  yellow "⊘ no desktop environment, skipping terminal configs"
+fi
