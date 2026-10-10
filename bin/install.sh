@@ -99,9 +99,18 @@ link_dotfile "gitconfig" ".gitconfig"
 link_dotfile "gitignore_global" ".gitignore_global"
 link_dotfile "projections.json" ".projections.json"
 link_dotfile "alacritty.toml" ".config/alacritty/alacritty.toml"
-link_dotfile "ghostty/config" "Library/Application Support/com.mitchellh.ghostty/config"
-link_dotfile "Brewfile" ".Brewfile"
-link_dotfile "gpg-agent.$(uname -m).conf" ".gnupg/gpg-agent.conf"
 link_dotfile "ripgreprc" ".config/ripgrep/rc"
 link_dotfile "tmux.conf" ".tmux.conf"
 link_dotfile "bin/tmux-urls" "bin/tmux-urls"
+link_dotfile "bin/copy" "bin/copy"
+
+case "$(uname -s)" in
+  Darwin)
+    link_dotfile "ghostty/config" "Library/Application Support/com.mitchellh.ghostty/config"
+    link_dotfile "Brewfile" ".Brewfile"
+    link_dotfile "gpg-agent.$(uname -m).conf" ".gnupg/gpg-agent.conf"
+    ;;
+  Linux)
+    link_dotfile "ghostty/config" ".config/ghostty/config"
+    ;;
+esac

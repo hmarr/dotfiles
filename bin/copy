@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Copy stdin to the clipboard using pbcopy on a mac and OSC52 if remote.
+# Writes OSC52 to the tty so it works when stdout is redirected (e.g. from fzf).
+
+if [[ -z "$SSH_CONNECTION" ]] && command -v pbcopy &>/dev/null; then
+  exec pbcopy
+fi
+
+printf '\033]52;c;%s\a' "$(base64 | tr -d '\n')" >/dev/tty

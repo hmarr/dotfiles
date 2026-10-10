@@ -10,5 +10,7 @@ export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30
 
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/rc"
 
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-. "$HOME/.cargo/env"
+if [ -x /Applications/Tailscale.app/Contents/MacOS/Tailscale ]; then
+  alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fi
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

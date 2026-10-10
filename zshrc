@@ -129,7 +129,7 @@ if [ -f "$HOME/.fzf.zsh" ]; then
   source "$HOME/.fzf.zsh"
   export FZF_CTRL_R_OPTS="
     --wrap
-    --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+    --bind 'ctrl-y:execute-silent(echo -n {2..} | copy)+abort'
     --color header:italic
     --header 'Press CTRL-Y to copy command into clipboard'"
 fi
@@ -346,8 +346,8 @@ prs() {
       --header 'enter/ctrl-o: open in browser | alt-p: preview | alt-m: merge | alt-u: copy url | alt-y: copy branch' \
       --bind 'enter:become(gh pr view --web {1})' \
       --bind 'ctrl-o:execute-silent(gh pr view --web {1})' \
-      --bind 'alt-u:execute-silent(gh pr view --json url $(echo {1} | sed "s/#//") | jq -r .url | pbcopy)' \
-      --bind 'alt-y:execute-silent(gh pr view --json headRefName -q .headRefName {1} | pbcopy)' \
+      --bind 'alt-u:execute-silent(gh pr view --json url $(echo {1} | sed "s/#//") | jq -r .url | copy)' \
+      --bind 'alt-y:execute-silent(gh pr view --json headRefName -q .headRefName {1} | copy)' \
       --bind 'alt-m:execute(gh pr merge {1})' \
       --bind 'alt-p:toggle-preview' \
       --preview-window=hidden \
@@ -504,15 +504,6 @@ notify() {
     printf '\033Ptmux;\033\033]9;%s\007\033\\' "$1"
   else
     printf '\033]9;%s\007' "$1"
-  fi
-}
-
-# Copy to the clipboard using pbcopy on a mac and OSC52 if remote
-copy() {
-  if [[ -z "$SSH_CONNECTION" ]] && command -v pbcopy &>/dev/null; then
-    pbcopy
-  else
-    printf '\033]52;c;%s\a' "$(cat | base64 | tr -d '\n')"
   fi
 }
 
